@@ -54,7 +54,6 @@ void Sensor_task(void const * argument)
 {
 	uint32_t waitetime;
 	uint8_t timecounter=0;
-	uint32_t out[8];
 	float output[8];
   /* USER CODE BEGIN StartLEDFlashTask */
 	osDelay(INS_TASK_INIT_TIME);
@@ -80,7 +79,11 @@ void Sensor_task(void const * argument)
 		timecounter++;
 		if (timecounter==10) 
 		{
-			timecounter = 0;
+			timecounter=0;
+			output[0] = INS_Angle[0];
+			output[1] = INS_Angle[1];
+			output[2] = INS_Angle[2];
+			sendware(output,sizeof(output));
 		}
 		
 	
