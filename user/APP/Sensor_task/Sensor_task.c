@@ -48,7 +48,10 @@
 
 //static MPU6500 mpu6500;
 //static IST8310 ist8310;
-
+int32_t Jcopelook1;
+int32_t Jcopelook2;
+int32_t Jcopelook3;
+int32_t Jcopelook4;
 
 void Sensor_task(void const * argument)
 {
@@ -64,31 +67,38 @@ void Sensor_task(void const * argument)
 	
 	Offset_Getdata();
 	
-//	waitetime = osKernelSysTick();
+	waitetime = xTaskGetTickCount();
+		//osKernelSysTick();
 	
   /* Infinite loop */
 	for(;;)
 	{
-//		osDelayUntil(&waitetime, 1);
-		osDelay(1);
+		Jcopelook1++;
+		if (Jcopelook1 == 1000) Jcopelook1 = 0;
+		//osDelay(1);
 		MPU6500_GetData();
 		Offset_Cal();
 		IMU_Cali_Slove(INS_gyro, INS_accel, INS_mag, &mpu6500, &ist8310);
 		MPU6500_GetAngle();
 		
+		Jcopelook2 = INS_Angle[0]*1000;
+		Jcopelook3 = INS_Angle[1]*1000;
+		Jcopelook4 = INS_Angle[2]*1000;
+		
 		timecounter++;
-		if (timecounter==10) 
-		{
-			timecounter=0;
-			output[0] = INS_Angle[0];
-			output[1] = INS_Angle[1];
-			output[2] = INS_Angle[2];
+//		if (timecounter==10) 
+//		{
+//			timecounter=0;
+//			output[0] = INS_Angle[0];
+//			output[1] = INS_Angle[1];
+//			output[2] = INS_Angle[2];
 //			output[3] = mpu6500.GyroX;
 //			output[4] = mpu6500.GyroY;
 //			output[5] = mpu6500.GyroZ;
-			sendware(output,sizeof(output));
-		}
+//			sendware(output,sizeof(output));
+//		}
 		
+		osDelayUntil(&waitetime, 1);
 	
 	}
   /* USER CODE END StartLEDFlashTask */
