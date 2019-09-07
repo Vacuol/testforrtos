@@ -49,7 +49,7 @@ testforrtos\sensor_task.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/se
 testforrtos\sensor_task.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/event_groups.h
 testforrtos\sensor_task.o: ..\user\AHRS\AHRS.h
 testforrtos\sensor_task.o: ..\user\AHRS\AHRS_MiddleWare.h
-testforrtos\sensor_task.o: ..\user\mpu6500\mpu6500.h
 testforrtos\sensor_task.o: ..\user\mpu6500\ist8310.h
+testforrtos\sensor_task.o: ..\user\mpu6500\mpu6500.h
 testforrtos\sensor_task.o: D:\soft\keil5\ARM\ARMCC\Bin\..\include\math.h
 testforrtos\sensor_task.o: ..\user\APP\usart_debug\usart_debug.h
