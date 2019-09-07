@@ -51,3 +51,5 @@ testforrtos\led_task.o: ..\user\APP\Sensor_task\Sensor_task.h
 testforrtos\led_task.o: ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.h
 testforrtos\led_task.o: ..\user\AHRS\AHRS.h
 testforrtos\led_task.o: ..\user\AHRS\AHRS_MiddleWare.h
+testforrtos\led_task.o: ..\user\mpu6500\ist8310.h
+testforrtos\led_task.o: ..\user\mpu6500\mpu6500.h

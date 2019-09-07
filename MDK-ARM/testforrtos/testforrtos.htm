@@ -3,7 +3,7 @@
 <title>Static Call Graph - [testforrtos\testforrtos.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image testforrtos\testforrtos.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060750: Last Updated: Sat Sep 07 20:35:09 2019
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060750: Last Updated: Sat Sep 07 21:57:32 2019
 <BR><P>
 <H3>Maximum Stack Usage =        288 bytes + Unknown(Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -805,9 +805,9 @@ Global Symbols
 <BR>[Calls]<UL><LI><a href="#[a8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPI_EndRxTxTransaction
 <LI><a href="#[8d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_GetTick
 </UL>
-<BR>[Called By]<UL><LI><a href="#[c0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MPU6500_Write_Reg
+<BR>[Called By]<UL><LI><a href="#[c3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MPU6500_Write_Regs
+<LI><a href="#[c0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MPU6500_Write_Reg
 <LI><a href="#[bc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MPU6500_Read_Regs
-<LI><a href="#[c3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MPU6500_Write_Regs
 <LI><a href="#[bf]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MPU6500_Read_Reg
 </UL>
 
@@ -920,7 +920,7 @@ Global Symbols
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> startup_stm32f427xx.o(RESET)
 </UL>
-<P><STRONG><a name="[d0]"></a>IMU_Cali_Slove</STRONG> (Thumb, 228 bytes, Stack size 36 bytes, mpu6500.o(i.IMU_Cali_Slove))
+<P><STRONG><a name="[d0]"></a>IMU_Cali_Slove</STRONG> (Thumb, 228 bytes, Stack size 36 bytes, sensor_task.o(i.IMU_Cali_Slove))
 <BR><BR>[Stack]<UL><LI>Max Depth = 36<LI>Call Chain = IMU_Cali_Slove
 </UL>
 <BR>[Called By]<UL><LI><a href="#[6d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Sensor_task
@@ -934,7 +934,7 @@ Global Symbols
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> freertos.o(.constdata)
 </UL>
-<P><STRONG><a name="[b9]"></a>MPU6500_GetAngle</STRONG> (Thumb, 290 bytes, Stack size 32 bytes, mpu6500.o(i.MPU6500_GetAngle))
+<P><STRONG><a name="[b9]"></a>MPU6500_GetAngle</STRONG> (Thumb, 290 bytes, Stack size 32 bytes, sensor_task.o(i.MPU6500_GetAngle))
 <BR><BR>[Stack]<UL><LI>Max Depth = 272<LI>Call Chain = MPU6500_GetAngle &rArr; AHRS_update &rArr; accel_comple_filter &rArr; accel_update_kp_ki
 </UL>
 <BR>[Calls]<UL><LI><a href="#[ba]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;get_angle
@@ -944,7 +944,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[6d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Sensor_task
 </UL>
 
-<P><STRONG><a name="[bb]"></a>MPU6500_GetData</STRONG> (Thumb, 248 bytes, Stack size 32 bytes, mpu6500.o(i.MPU6500_GetData))
+<P><STRONG><a name="[bb]"></a>MPU6500_GetData</STRONG> (Thumb, 248 bytes, Stack size 32 bytes, sensor_task.o(i.MPU6500_GetData))
 <BR><BR>[Stack]<UL><LI>Max Depth = 136<LI>Call Chain = MPU6500_GetData &rArr; MPU6500_Read_Regs &rArr; HAL_SPI_TransmitReceive &rArr; SPI_EndRxTxTransaction &rArr; SPI_WaitFlagStateUntilTimeout
 </UL>
 <BR>[Calls]<UL><LI><a href="#[bc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MPU6500_Read_Regs
@@ -953,7 +953,7 @@ Global Symbols
 <LI><a href="#[cb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Offset_Getdata
 </UL>
 
-<P><STRONG><a name="[bd]"></a>MPU6500_Init</STRONG> (Thumb, 70 bytes, Stack size 32 bytes, mpu6500.o(i.MPU6500_Init))
+<P><STRONG><a name="[bd]"></a>MPU6500_Init</STRONG> (Thumb, 70 bytes, Stack size 32 bytes, sensor_task.o(i.MPU6500_Init))
 <BR><BR>[Stack]<UL><LI>Max Depth = 136<LI>Call Chain = MPU6500_Init &rArr; MPU6500_Write_Reg &rArr; HAL_SPI_TransmitReceive &rArr; SPI_EndRxTxTransaction &rArr; SPI_WaitFlagStateUntilTimeout
 </UL>
 <BR>[Calls]<UL><LI><a href="#[b8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osDelay
@@ -1072,11 +1072,11 @@ Global Symbols
 <P><STRONG><a name="[1]"></a>NMI_Handler</STRONG> (Thumb, 2 bytes, Stack size 0 bytes, stm32f4xx_it.o(i.NMI_Handler))
 <BR>[Address Reference Count : 1]<UL><LI> startup_stm32f427xx.o(RESET)
 </UL>
-<P><STRONG><a name="[cf]"></a>Offset_Cal</STRONG> (Thumb, 56 bytes, Stack size 0 bytes, mpu6500.o(i.Offset_Cal))
+<P><STRONG><a name="[cf]"></a>Offset_Cal</STRONG> (Thumb, 56 bytes, Stack size 0 bytes, sensor_task.o(i.Offset_Cal))
 <BR><BR>[Called By]<UL><LI><a href="#[6d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Sensor_task
 </UL>
 
-<P><STRONG><a name="[cb]"></a>Offset_Getdata</STRONG> (Thumb, 234 bytes, Stack size 16 bytes, mpu6500.o(i.Offset_Getdata))
+<P><STRONG><a name="[cb]"></a>Offset_Getdata</STRONG> (Thumb, 234 bytes, Stack size 16 bytes, sensor_task.o(i.Offset_Getdata))
 <BR><BR>[Stack]<UL><LI>Max Depth = 152<LI>Call Chain = Offset_Getdata &rArr; MPU6500_GetData &rArr; MPU6500_Read_Regs &rArr; HAL_SPI_TransmitReceive &rArr; SPI_EndRxTxTransaction &rArr; SPI_WaitFlagStateUntilTimeout
 </UL>
 <BR>[Calls]<UL><LI><a href="#[b8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osDelay
@@ -1089,12 +1089,10 @@ Global Symbols
 <BR><BR>[Called By]<UL><LI><a href="#[44]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DMA2_Stream2_IRQHandler
 </UL>
 
-<P><STRONG><a name="[6d]"></a>Sensor_task</STRONG> (Thumb, 146 bytes, Stack size 16 bytes, sensor_task.o(i.Sensor_task))
+<P><STRONG><a name="[6d]"></a>Sensor_task</STRONG> (Thumb, 156 bytes, Stack size 16 bytes, sensor_task.o(i.Sensor_task))
 <BR><BR>[Stack]<UL><LI>Max Depth = 288<LI>Call Chain = Sensor_task &rArr; MPU6500_GetAngle &rArr; AHRS_update &rArr; accel_comple_filter &rArr; accel_update_kp_ki
 </UL>
 <BR>[Calls]<UL><LI><a href="#[b8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osDelay
-<LI><a href="#[d1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osDelayUntil
-<LI><a href="#[ce]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;xTaskGetTickCount
 <LI><a href="#[cd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ist8310_init
 <LI><a href="#[cb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Offset_Getdata
 <LI><a href="#[cf]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Offset_Cal
@@ -1102,6 +1100,8 @@ Global Symbols
 <LI><a href="#[bb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MPU6500_GetData
 <LI><a href="#[b9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MPU6500_GetAngle
 <LI><a href="#[d0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;IMU_Cali_Slove
+<LI><a href="#[d1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osDelayUntil
+<LI><a href="#[ce]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;xTaskGetTickCount
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> freertos.o(.constdata)
 </UL>
@@ -1299,18 +1299,18 @@ Global Symbols
 <P><STRONG><a name="[c2]"></a>mpu6500_SPI_NS_H</STRONG> (Thumb, 10 bytes, Stack size 0 bytes, mpu6500.o(i.mpu6500_SPI_NS_H))
 <BR><BR>[Calls]<UL><LI><a href="#[b7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_GPIO_WritePin
 </UL>
-<BR>[Called By]<UL><LI><a href="#[c0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MPU6500_Write_Reg
+<BR>[Called By]<UL><LI><a href="#[c3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MPU6500_Write_Regs
+<LI><a href="#[c0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MPU6500_Write_Reg
 <LI><a href="#[bc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MPU6500_Read_Regs
-<LI><a href="#[c3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MPU6500_Write_Regs
 <LI><a href="#[bf]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MPU6500_Read_Reg
 </UL>
 
 <P><STRONG><a name="[c1]"></a>mpu6500_SPI_NS_L</STRONG> (Thumb, 10 bytes, Stack size 0 bytes, mpu6500.o(i.mpu6500_SPI_NS_L))
 <BR><BR>[Calls]<UL><LI><a href="#[b7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_GPIO_WritePin
 </UL>
-<BR>[Called By]<UL><LI><a href="#[c0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MPU6500_Write_Reg
+<BR>[Called By]<UL><LI><a href="#[c3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MPU6500_Write_Regs
+<LI><a href="#[c0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MPU6500_Write_Reg
 <LI><a href="#[bc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MPU6500_Read_Regs
-<LI><a href="#[c3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MPU6500_Write_Regs
 <LI><a href="#[bf]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MPU6500_Read_Reg
 </UL>
 

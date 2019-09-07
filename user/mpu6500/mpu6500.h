@@ -159,36 +159,9 @@ typedef struct
  
 } IST8310;
 
-extern float Gyro_Scale_Factor[3][3] ; //陀螺仪校准线性度
-extern float gyro_cali_offset[3] ;
-extern float Gyro_Offset[3] ;            //陀螺仪零漂
-extern float Accel_Scale_Factor[3][3]; //加速度校准线性度
-extern float Accel_Offset[3]  ;            //加速度零漂
-extern float Mag_Scale_Factor[3][3]; //磁力计校准线性度
-extern float Mag_Offset[3] ;            //磁力计零漂
-
-
-extern float INS_gyro[3] ;
-extern float INS_accel[3];
-extern float INS_mag[3];
-
-extern float INS_Angle[3] ;      //欧拉角 单位 rad
-extern float INS_quat[4] ; //四元数
-
-extern MPU6500 mpu6500,mpu6500_off;
-extern IST8310 ist8310;
-
-extern uint8_t MPU_id;
-uint8_t MPU6500_Init(void);
 uint8_t MPU6500_Write_Reg(uint8_t const reg, uint8_t const data);
 uint8_t MPU6500_Write_Regs(uint8_t const regAddr, uint8_t *pData ,uint8_t len);
 uint8_t MPU6500_Read_Reg(uint8_t const reg);
 uint8_t MPU6500_Read_Regs(uint8_t const regAddr, uint8_t *pData, uint8_t len);
-void MPU6500_GetData(void);
-void IST8310_GetData(void);
-void IMU_Cali_Slove(float gyro[3], float accel[3], float mag[3], MPU6500 *mpu6500, IST8310 *ist8310);
-void Offset_Getdata(void);
-void Offset_Cal(void);
-void MPU6500_GetAngle(void);
 
 #endif

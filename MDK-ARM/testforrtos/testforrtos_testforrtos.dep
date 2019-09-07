@@ -1118,9 +1118,11 @@ I (../Middlewares/Third_Party/FreeRTOS/Source/include/timers.h)(0x5D6F5944)
 I (../Middlewares/Third_Party/FreeRTOS/Source/include/queue.h)(0x5D6F5944)
 I (../Middlewares/Third_Party/FreeRTOS/Source/include/semphr.h)(0x5D6F5944)
 I (../Middlewares/Third_Party/FreeRTOS/Source/include/event_groups.h)(0x5D6F5944)
-I (..\user\APP\Sensor_task\Sensor_task.h)(0x5D6F5944)
+I (..\user\APP\Sensor_task\Sensor_task.h)(0x5D73B742)
 I (..\user\AHRS\AHRS.h)(0x5D6F5944)
 I (..\user\AHRS\AHRS_MiddleWare.h)(0x5D6F5944)
+I (..\user\mpu6500\ist8310.h)(0x5D6F5944)
+I (..\user\mpu6500\mpu6500.h)(0x5D73B742)
 F (..\user\APP\remote_control\remote.c)(0x5D6F5944)(--c99 -c --cpu Cortex-M4.fp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ..\user\APP\LED_task -I ..\user\APP\detect_task -I ..\user\APP\remote_control -I ..\user\AHRS -I ..\user\mpu6500 -I ..\user\DSP\Include -I ..\user\APP\Sensor_task -I ..\user\APP\usart_debug-I.\RTE\_testforrtos-ID:\soft\keil5\ARM\PACK\ARM\CMSIS\5.4.0\CMSIS\Core\Include-ID:\soft\keil5\ARM\PACK\Keil\STM32F4xx_DFP\2.13.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="526" -D_RTE_ -DSTM32F427xx -DUSE_HAL_DRIVER -DSTM32F427xx -DARM_MATH_CM4 -D__TARGET_FPU_VFP -D__FPU_PRESENT="1"-o testforrtos\remote.o --omf_browse testforrtos\remote.crf --depend testforrtos\remote.d)
 I (..\user\APP\remote_control\remote.h)(0x5D6F5944)
 I (../Inc/main.h)(0x5D6F5944)
@@ -1203,8 +1205,8 @@ I (../Middlewares/Third_Party/FreeRTOS/Source/include/timers.h)(0x5D6F5944)
 I (../Middlewares/Third_Party/FreeRTOS/Source/include/queue.h)(0x5D6F5944)
 I (../Middlewares/Third_Party/FreeRTOS/Source/include/semphr.h)(0x5D6F5944)
 I (../Middlewares/Third_Party/FreeRTOS/Source/include/event_groups.h)(0x5D6F5944)
-F (..\user\APP\Sensor_task\Sensor_task.c)(0x5D73A3FA)(--c99 -c --cpu Cortex-M4.fp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ..\user\APP\LED_task -I ..\user\APP\detect_task -I ..\user\APP\remote_control -I ..\user\AHRS -I ..\user\mpu6500 -I ..\user\DSP\Include -I ..\user\APP\Sensor_task -I ..\user\APP\usart_debug-I.\RTE\_testforrtos-ID:\soft\keil5\ARM\PACK\ARM\CMSIS\5.4.0\CMSIS\Core\Include-ID:\soft\keil5\ARM\PACK\Keil\STM32F4xx_DFP\2.13.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="526" -D_RTE_ -DSTM32F427xx -DUSE_HAL_DRIVER -DSTM32F427xx -DARM_MATH_CM4 -D__TARGET_FPU_VFP -D__FPU_PRESENT="1"-o testforrtos\sensor_task.o --omf_browse testforrtos\sensor_task.crf --depend testforrtos\sensor_task.d)
-I (..\user\APP\Sensor_task\Sensor_task.h)(0x5D6F5944)
+F (..\user\APP\Sensor_task\Sensor_task.c)(0x5D73B742)(--c99 -c --cpu Cortex-M4.fp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ..\user\APP\LED_task -I ..\user\APP\detect_task -I ..\user\APP\remote_control -I ..\user\AHRS -I ..\user\mpu6500 -I ..\user\DSP\Include -I ..\user\APP\Sensor_task -I ..\user\APP\usart_debug-I.\RTE\_testforrtos-ID:\soft\keil5\ARM\PACK\ARM\CMSIS\5.4.0\CMSIS\Core\Include-ID:\soft\keil5\ARM\PACK\Keil\STM32F4xx_DFP\2.13.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="526" -D_RTE_ -DSTM32F427xx -DUSE_HAL_DRIVER -DSTM32F427xx -DARM_MATH_CM4 -D__TARGET_FPU_VFP -D__FPU_PRESENT="1"-o testforrtos\sensor_task.o --omf_browse testforrtos\sensor_task.crf --depend testforrtos\sensor_task.d)
+I (..\user\APP\Sensor_task\Sensor_task.h)(0x5D73B742)
 I (../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h)(0x5D6F5944)
 I (D:\soft\keil5\ARM\ARMCC\include\stddef.h)(0x599EDB3C)
 I (D:\soft\keil5\ARM\ARMCC\include\stdint.h)(0x599EDB3E)
@@ -1253,8 +1255,8 @@ I (../Middlewares/Third_Party/FreeRTOS/Source/include/semphr.h)(0x5D6F5944)
 I (../Middlewares/Third_Party/FreeRTOS/Source/include/event_groups.h)(0x5D6F5944)
 I (..\user\AHRS\AHRS.h)(0x5D6F5944)
 I (..\user\AHRS\AHRS_MiddleWare.h)(0x5D6F5944)
-I (..\user\mpu6500\mpu6500.h)(0x5D6F5944)
 I (..\user\mpu6500\ist8310.h)(0x5D6F5944)
+I (..\user\mpu6500\mpu6500.h)(0x5D73B742)
 I (D:\soft\keil5\ARM\ARMCC\include\math.h)(0x599EDB3E)
 I (..\user\APP\usart_debug\usart_debug.h)(0x5D6F5944)
 F (..\user\APP\usart_debug\usart_debug.c)(0x5D6F5944)(--c99 -c --cpu Cortex-M4.fp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ..\user\APP\LED_task -I ..\user\APP\detect_task -I ..\user\APP\remote_control -I ..\user\AHRS -I ..\user\mpu6500 -I ..\user\DSP\Include -I ..\user\APP\Sensor_task -I ..\user\APP\usart_debug-I.\RTE\_testforrtos-ID:\soft\keil5\ARM\PACK\ARM\CMSIS\5.4.0\CMSIS\Core\Include-ID:\soft\keil5\ARM\PACK\Keil\STM32F4xx_DFP\2.13.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="526" -D_RTE_ -DSTM32F427xx -DUSE_HAL_DRIVER -DSTM32F427xx -DARM_MATH_CM4 -D__TARGET_FPU_VFP -D__FPU_PRESENT="1"-o testforrtos\usart_debug.o --omf_browse testforrtos\usart_debug.crf --depend testforrtos\usart_debug.d)
@@ -1366,7 +1368,7 @@ I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h)(0x5D6F5944)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h)(0x5D6F5944)
 I (../Inc/spi.h)(0x5D6F5944)
 I (../Inc/gpio.h)(0x5D6F5944)
-I (..\user\mpu6500\mpu6500.h)(0x5D6F5944)
+I (..\user\mpu6500\mpu6500.h)(0x5D73B742)
 I (../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.h)(0x5D6F5944)
 I (../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h)(0x5D6F5944)
 I (../Inc/FreeRTOSConfig.h)(0x5D711945)
@@ -1381,8 +1383,8 @@ I (../Middlewares/Third_Party/FreeRTOS/Source/include/timers.h)(0x5D6F5944)
 I (../Middlewares/Third_Party/FreeRTOS/Source/include/queue.h)(0x5D6F5944)
 I (../Middlewares/Third_Party/FreeRTOS/Source/include/semphr.h)(0x5D6F5944)
 I (../Middlewares/Third_Party/FreeRTOS/Source/include/event_groups.h)(0x5D6F5944)
-F (..\user\mpu6500\mpu6500.c)(0x5D6F5944)(--c99 -c --cpu Cortex-M4.fp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ..\user\APP\LED_task -I ..\user\APP\detect_task -I ..\user\APP\remote_control -I ..\user\AHRS -I ..\user\mpu6500 -I ..\user\DSP\Include -I ..\user\APP\Sensor_task -I ..\user\APP\usart_debug-I.\RTE\_testforrtos-ID:\soft\keil5\ARM\PACK\ARM\CMSIS\5.4.0\CMSIS\Core\Include-ID:\soft\keil5\ARM\PACK\Keil\STM32F4xx_DFP\2.13.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="526" -D_RTE_ -DSTM32F427xx -DUSE_HAL_DRIVER -DSTM32F427xx -DARM_MATH_CM4 -D__TARGET_FPU_VFP -D__FPU_PRESENT="1"-o testforrtos\mpu6500.o --omf_browse testforrtos\mpu6500.crf --depend testforrtos\mpu6500.d)
-I (..\user\mpu6500\mpu6500.h)(0x5D6F5944)
+F (..\user\mpu6500\mpu6500.c)(0x5D73B060)(--c99 -c --cpu Cortex-M4.fp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ..\user\APP\LED_task -I ..\user\APP\detect_task -I ..\user\APP\remote_control -I ..\user\AHRS -I ..\user\mpu6500 -I ..\user\DSP\Include -I ..\user\APP\Sensor_task -I ..\user\APP\usart_debug-I.\RTE\_testforrtos-ID:\soft\keil5\ARM\PACK\ARM\CMSIS\5.4.0\CMSIS\Core\Include-ID:\soft\keil5\ARM\PACK\Keil\STM32F4xx_DFP\2.13.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="526" -D_RTE_ -DSTM32F427xx -DUSE_HAL_DRIVER -DSTM32F427xx -DARM_MATH_CM4 -D__TARGET_FPU_VFP -D__FPU_PRESENT="1"-o testforrtos\mpu6500.o --omf_browse testforrtos\mpu6500.crf --depend testforrtos\mpu6500.d)
+I (..\user\mpu6500\mpu6500.h)(0x5D73B742)
 I (../Inc/main.h)(0x5D6F5944)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h)(0x5D6F5944)
 I (../Inc/stm32f4xx_hal_conf.h)(0x5D6F5944)
