@@ -23,6 +23,7 @@ testforrtos\main.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_gpio_ex.h
 testforrtos\main.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_dma.h
 testforrtos\main.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_dma_ex.h
 testforrtos\main.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_cortex.h
+testforrtos\main.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_can.h
 testforrtos\main.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_flash.h
 testforrtos\main.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_flash_ex.h
 testforrtos\main.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_flash_ramfunc.h
@@ -46,9 +47,11 @@ testforrtos\main.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/timers.h
 testforrtos\main.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/queue.h
 testforrtos\main.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/semphr.h
 testforrtos\main.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/event_groups.h
+testforrtos\main.o: ../Inc/can.h
 testforrtos\main.o: ../Inc/dma.h
 testforrtos\main.o: ../Inc/spi.h
 testforrtos\main.o: ../Inc/usart.h
 testforrtos\main.o: ../Inc/gpio.h
+testforrtos\main.o: ..\user\APP\can_receive\can_receive.h
 testforrtos\main.o: ..\user\APP\remote_control\remote.h
 testforrtos\main.o: ..\user\mpu6500\ist8310.h

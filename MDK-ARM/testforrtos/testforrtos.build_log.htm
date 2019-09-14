@@ -22,41 +22,198 @@ Dialog DLL:      TCM.DLL V1.36.1.0
  
 <h2>Project:</h2>
 D:\GitHub\testforrtos\MDK-ARM\testforrtos.uvprojx
-Project File Date:  09/04/2019
+Project File Date:  09/14/2019
 
 <h2>Output:</h2>
 *** Using Compiler 'V5.06 update 6 (build 750)', folder: 'D:\soft\keil5\ARM\ARMCC\Bin'
 Build target 'testforrtos'
-compiling mpu6500.c...
+assembling startup_stm32f427xx.s...
+compiling spi.c...
 ../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f427xx.h(68): warning:  #47-D: incompatible redefinition of macro "__FPU_PRESENT" 
   #define __FPU_PRESENT             1U       /*!< FPU present                                   */
-..\user\mpu6500\mpu6500.c: 1 warning, 0 errors
+../Src/spi.c: 1 warning, 0 errors
+compiling usart.c...
+../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f427xx.h(68): warning:  #47-D: incompatible redefinition of macro "__FPU_PRESENT" 
+  #define __FPU_PRESENT             1U       /*!< FPU present                                   */
+../Src/usart.c: 1 warning, 0 errors
+compiling main.c...
+../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f427xx.h(68): warning:  #47-D: incompatible redefinition of macro "__FPU_PRESENT" 
+  #define __FPU_PRESENT             1U       /*!< FPU present                                   */
+../Src/main.c: 1 warning, 0 errors
+compiling freertos.c...
+../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f427xx.h(68): warning:  #47-D: incompatible redefinition of macro "__FPU_PRESENT" 
+  #define __FPU_PRESENT             1U       /*!< FPU present                                   */
+../Src/freertos.c: 1 warning, 0 errors
+compiling dma.c...
+../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f427xx.h(68): warning:  #47-D: incompatible redefinition of macro "__FPU_PRESENT" 
+  #define __FPU_PRESENT             1U       /*!< FPU present                                   */
+../Src/dma.c: 1 warning, 0 errors
+compiling gpio.c...
+../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f427xx.h(68): warning:  #47-D: incompatible redefinition of macro "__FPU_PRESENT" 
+  #define __FPU_PRESENT             1U       /*!< FPU present                                   */
+../Src/gpio.c: 1 warning, 0 errors
+compiling can.c...
+../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f427xx.h(68): warning:  #47-D: incompatible redefinition of macro "__FPU_PRESENT" 
+  #define __FPU_PRESENT             1U       /*!< FPU present                                   */
+../Src/can.c: 1 warning, 0 errors
+compiling stm32f4xx_it.c...
+../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f427xx.h(68): warning:  #47-D: incompatible redefinition of macro "__FPU_PRESENT" 
+  #define __FPU_PRESENT             1U       /*!< FPU present                                   */
+../Src/stm32f4xx_it.c: 1 warning, 0 errors
+compiling stm32f4xx_hal_timebase_tim.c...
+../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f427xx.h(68): warning:  #47-D: incompatible redefinition of macro "__FPU_PRESENT" 
+  #define __FPU_PRESENT             1U       /*!< FPU present                                   */
+../Src/stm32f4xx_hal_timebase_tim.c: 1 warning, 0 errors
+compiling stm32f4xx_hal_can.c...
+../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f427xx.h(68): warning:  #47-D: incompatible redefinition of macro "__FPU_PRESENT" 
+  #define __FPU_PRESENT             1U       /*!< FPU present                                   */
+../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_can.c: 1 warning, 0 errors
+compiling stm32f4xx_hal_msp.c...
+../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f427xx.h(68): warning:  #47-D: incompatible redefinition of macro "__FPU_PRESENT" 
+  #define __FPU_PRESENT             1U       /*!< FPU present                                   */
+../Src/stm32f4xx_hal_msp.c: 1 warning, 0 errors
+compiling stm32f4xx_hal_tim_ex.c...
+../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f427xx.h(68): warning:  #47-D: incompatible redefinition of macro "__FPU_PRESENT" 
+  #define __FPU_PRESENT             1U       /*!< FPU present                                   */
+../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim_ex.c: 1 warning, 0 errors
+compiling stm32f4xx_hal_tim.c...
+../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f427xx.h(68): warning:  #47-D: incompatible redefinition of macro "__FPU_PRESENT" 
+  #define __FPU_PRESENT             1U       /*!< FPU present                                   */
+../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim.c: 1 warning, 0 errors
+compiling stm32f4xx_hal_spi.c...
+../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f427xx.h(68): warning:  #47-D: incompatible redefinition of macro "__FPU_PRESENT" 
+  #define __FPU_PRESENT             1U       /*!< FPU present                                   */
+../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_spi.c: 1 warning, 0 errors
+compiling stm32f4xx_hal_uart.c...
+../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f427xx.h(68): warning:  #47-D: incompatible redefinition of macro "__FPU_PRESENT" 
+  #define __FPU_PRESENT             1U       /*!< FPU present                                   */
+../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_uart.c: 1 warning, 0 errors
+compiling stm32f4xx_hal_rcc.c...
+../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f427xx.h(68): warning:  #47-D: incompatible redefinition of macro "__FPU_PRESENT" 
+  #define __FPU_PRESENT             1U       /*!< FPU present                                   */
+../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc.c: 1 warning, 0 errors
+compiling stm32f4xx_hal_flash.c...
+../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f427xx.h(68): warning:  #47-D: incompatible redefinition of macro "__FPU_PRESENT" 
+  #define __FPU_PRESENT             1U       /*!< FPU present                                   */
+../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash.c: 1 warning, 0 errors
+compiling stm32f4xx_hal_flash_ramfunc.c...
+../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f427xx.h(68): warning:  #47-D: incompatible redefinition of macro "__FPU_PRESENT" 
+  #define __FPU_PRESENT             1U       /*!< FPU present                                   */
+../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash_ramfunc.c: 1 warning, 0 errors
+compiling stm32f4xx_hal_rcc_ex.c...
+../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f427xx.h(68): warning:  #47-D: incompatible redefinition of macro "__FPU_PRESENT" 
+  #define __FPU_PRESENT             1U       /*!< FPU present                                   */
+../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc_ex.c: 1 warning, 0 errors
+compiling stm32f4xx_hal_flash_ex.c...
+../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f427xx.h(68): warning:  #47-D: incompatible redefinition of macro "__FPU_PRESENT" 
+  #define __FPU_PRESENT             1U       /*!< FPU present                                   */
+../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash_ex.c: 1 warning, 0 errors
+compiling stm32f4xx_hal_gpio.c...
+../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f427xx.h(68): warning:  #47-D: incompatible redefinition of macro "__FPU_PRESENT" 
+  #define __FPU_PRESENT             1U       /*!< FPU present                                   */
+../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_gpio.c: 1 warning, 0 errors
+compiling stm32f4xx_hal_pwr.c...
+../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f427xx.h(68): warning:  #47-D: incompatible redefinition of macro "__FPU_PRESENT" 
+  #define __FPU_PRESENT             1U       /*!< FPU present                                   */
+../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pwr.c: 1 warning, 0 errors
+compiling croutine.c...
+compiling event_groups.c...
+compiling list.c...
+compiling queue.c...
+compiling stm32f4xx_hal_dma_ex.c...
+../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f427xx.h(68): warning:  #47-D: incompatible redefinition of macro "__FPU_PRESENT" 
+  #define __FPU_PRESENT             1U       /*!< FPU present                                   */
+../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dma_ex.c: 1 warning, 0 errors
+compiling stream_buffer.c...
+compiling timers.c...
+compiling stm32f4xx_hal_dma.c...
+../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f427xx.h(68): warning:  #47-D: incompatible redefinition of macro "__FPU_PRESENT" 
+  #define __FPU_PRESENT             1U       /*!< FPU present                                   */
+../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dma.c: 1 warning, 0 errors
+compiling tasks.c...
+compiling heap_4.c...
+compiling cmsis_os.c...
+compiling port.c...
+compiling stm32f4xx_hal_exti.c...
+../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f427xx.h(68): warning:  #47-D: incompatible redefinition of macro "__FPU_PRESENT" 
+  #define __FPU_PRESENT             1U       /*!< FPU present                                   */
+../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_exti.c: 1 warning, 0 errors
+compiling stm32f4xx_hal_cortex.c...
+../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f427xx.h(68): warning:  #47-D: incompatible redefinition of macro "__FPU_PRESENT" 
+  #define __FPU_PRESENT             1U       /*!< FPU present                                   */
+../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_cortex.c: 1 warning, 0 errors
+compiling stm32f4xx_hal_pwr_ex.c...
+../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f427xx.h(68): warning:  #47-D: incompatible redefinition of macro "__FPU_PRESENT" 
+  #define __FPU_PRESENT             1U       /*!< FPU present                                   */
+../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pwr_ex.c: 1 warning, 0 errors
+compiling system_stm32f4xx.c...
+../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f427xx.h(68): warning:  #47-D: incompatible redefinition of macro "__FPU_PRESENT" 
+  #define __FPU_PRESENT             1U       /*!< FPU present                                   */
+../Src/system_stm32f4xx.c: 1 warning, 0 errors
+compiling stm32f4xx_hal.c...
+../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f427xx.h(68): warning:  #47-D: incompatible redefinition of macro "__FPU_PRESENT" 
+  #define __FPU_PRESENT             1U       /*!< FPU present                                   */
+../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal.c: 1 warning, 0 errors
+compiling remote.c...
+../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f427xx.h(68): warning:  #47-D: incompatible redefinition of macro "__FPU_PRESENT" 
+  #define __FPU_PRESENT             1U       /*!< FPU present                                   */
+..\user\APP\remote_control\remote.c: 1 warning, 0 errors
 compiling LED_task.c...
 ../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f427xx.h(68): warning:  #47-D: incompatible redefinition of macro "__FPU_PRESENT" 
   #define __FPU_PRESENT             1U       /*!< FPU present                                   */
 ..\user\APP\LED_task\LED_task.c(19): warning:  #177-D: variable "angle"  was declared but never referenced
   	const float *angle;
 ..\user\APP\LED_task\LED_task.c: 2 warnings, 0 errors
+compiling detect_task.c...
+../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f427xx.h(68): warning:  #47-D: incompatible redefinition of macro "__FPU_PRESENT" 
+  #define __FPU_PRESENT             1U       /*!< FPU present                                   */
+..\user\APP\detect_task\detect_task.c: 1 warning, 0 errors
+compiling chassis_task.c...
+../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f427xx.h(68): warning:  #47-D: incompatible redefinition of macro "__FPU_PRESENT" 
+  #define __FPU_PRESENT             1U       /*!< FPU present                                   */
+..\user\APP\chassis_task\chassis_task.c: 1 warning, 0 errors
+compiling usart_debug.c...
+../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f427xx.h(68): warning:  #47-D: incompatible redefinition of macro "__FPU_PRESENT" 
+  #define __FPU_PRESENT             1U       /*!< FPU present                                   */
+..\user\APP\usart_debug\usart_debug.c: 1 warning, 0 errors
 compiling Sensor_task.c...
 ../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f427xx.h(68): warning:  #47-D: incompatible redefinition of macro "__FPU_PRESENT" 
   #define __FPU_PRESENT             1U       /*!< FPU present                                   */
-..\user\APP\Sensor_task\Sensor_task.c(57): warning:  #177-D: variable "output"  was declared but never referenced
-  	float output[8];
-..\user\APP\Sensor_task\Sensor_task.c(27): warning:  #550-D: variable "MPU_id"  was set but never used
+..\user\APP\Sensor_task\Sensor_task.c(58): warning:  #177-D: variable "Rxfifo"  was declared but never referenced
+  	uint32_t Rxfifo;
+..\user\APP\Sensor_task\Sensor_task.c(60): warning:  #177-D: variable "output"  was declared but never referenced
+  	uint8_t output[8];
+..\user\APP\Sensor_task\Sensor_task.c(29): warning:  #550-D: variable "MPU_id"  was set but never used
   static uint8_t MPU_id = 0;										
-..\user\APP\Sensor_task\Sensor_task.c(29): warning:  #177-D: variable "gyro_cali_offset"  was declared but never referenced
+..\user\APP\Sensor_task\Sensor_task.c(31): warning:  #177-D: variable "gyro_cali_offset"  was declared but never referenced
   static float gyro_cali_offset[3] ={0.0f, 0.0f, 0.0f};
-..\user\APP\Sensor_task\Sensor_task.c: 4 warnings, 0 errors
+..\user\APP\Sensor_task\Sensor_task.c: 5 warnings, 0 errors
+compiling can_receive.c...
+../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f427xx.h(68): warning:  #47-D: incompatible redefinition of macro "__FPU_PRESENT" 
+  #define __FPU_PRESENT             1U       /*!< FPU present                                   */
+..\user\APP\can_receive\can_receive.c: 1 warning, 0 errors
 compiling ist8310.c...
 ../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f427xx.h(68): warning:  #47-D: incompatible redefinition of macro "__FPU_PRESENT" 
   #define __FPU_PRESENT             1U       /*!< FPU present                                   */
 ..\user\mpu6500\ist8310.c(29): warning:  #177-D: variable "IIC_time"  was declared but never referenced
       static const uint16_t IIC_time = 2;
 ..\user\mpu6500\ist8310.c: 2 warnings, 0 errors
+compiling gimble_task.c...
+../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f427xx.h(68): warning:  #47-D: incompatible redefinition of macro "__FPU_PRESENT" 
+  #define __FPU_PRESENT             1U       /*!< FPU present                                   */
+..\user\APP\gimble_task\gimble_task.c: 1 warning, 0 errors
+compiling AHRS_middleware.c...
+../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f427xx.h(68): warning:  #47-D: incompatible redefinition of macro "__FPU_PRESENT" 
+  #define __FPU_PRESENT             1U       /*!< FPU present                                   */
+..\user\AHRS\AHRS_middleware.c: 1 warning, 0 errors
+compiling mpu6500.c...
+../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f427xx.h(68): warning:  #47-D: incompatible redefinition of macro "__FPU_PRESENT" 
+  #define __FPU_PRESENT             1U       /*!< FPU present                                   */
+..\user\mpu6500\mpu6500.c: 1 warning, 0 errors
 linking...
-Program Size: Code=17052 RO-data=2752 RW-data=316 ZI-data=17836  
+Program Size: Code=19056 RO-data=2832 RW-data=372 ZI-data=18060  
 FromELF: creating hex file...
-"testforrtos\testforrtos.axf" - 0 Error(s), 9 Warning(s).
+"testforrtos\testforrtos.axf" - 0 Error(s), 46 Warning(s).
 
 <h2>Software Packages used:</h2>
 
@@ -79,7 +236,7 @@ Package Vendor: Keil
 <h2>Collection of Component Files used:</h2>
 
    * Component: ARM::CMSIS:CORE:5.1.2
-Build Time Elapsed:  00:00:10
+Build Time Elapsed:  00:00:37
 </pre>
 </body>
 </html>

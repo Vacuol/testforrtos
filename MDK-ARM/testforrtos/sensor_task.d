@@ -33,6 +33,7 @@ testforrtos\sensor_task.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_gpi
 testforrtos\sensor_task.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_dma.h
 testforrtos\sensor_task.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_dma_ex.h
 testforrtos\sensor_task.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_cortex.h
+testforrtos\sensor_task.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_can.h
 testforrtos\sensor_task.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_flash.h
 testforrtos\sensor_task.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_flash_ex.h
 testforrtos\sensor_task.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_flash_ramfunc.h
@@ -53,3 +54,5 @@ testforrtos\sensor_task.o: ..\user\mpu6500\ist8310.h
 testforrtos\sensor_task.o: ..\user\mpu6500\mpu6500.h
 testforrtos\sensor_task.o: D:\soft\keil5\ARM\ARMCC\Bin\..\include\math.h
 testforrtos\sensor_task.o: ..\user\APP\usart_debug\usart_debug.h
+testforrtos\sensor_task.o: ../Inc/can.h
+testforrtos\sensor_task.o: ..\user\APP\can_receive\can_receive.h

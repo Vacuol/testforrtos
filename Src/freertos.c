@@ -52,6 +52,8 @@ osThreadId defaultTaskHandle;
 osThreadId LEDFlashTaskHandle;
 osThreadId detecttaskHandle;
 osThreadId SensortaskHandle;
+osThreadId gimbaltaskHandle;
+osThreadId chassistaskHandle;
 
 /* Private function prototypes -----------------------------------------------*/
 /* USER CODE BEGIN FunctionPrototypes */
@@ -62,6 +64,8 @@ void StartDefaultTask(void const * argument);
 extern void LEDFlash_Task(void const * argument);
 extern void detect_task(void const * argument);
 extern void Sensor_task(void const * argument);
+extern void gimble_task(void const * argument);
+extern void chassis_task(void const * argument);
 
 void MX_FREERTOS_Init(void); /* (MISRA C 2004 rule 8.1) */
 
@@ -123,6 +127,14 @@ void MX_FREERTOS_Init(void) {
   /* definition and creation of Sensortask */
   osThreadDef(Sensortask, Sensor_task, osPriorityNormal, 0, 128);
   SensortaskHandle = osThreadCreate(osThread(Sensortask), NULL);
+
+  /* definition and creation of gimbaltask */
+  osThreadDef(gimbaltask, gimble_task, osPriorityLow, 0, 128);
+  gimbaltaskHandle = osThreadCreate(osThread(gimbaltask), NULL);
+
+  /* definition and creation of chassistask */
+  osThreadDef(chassistask, chassis_task, osPriorityLow, 0, 128);
+  chassistaskHandle = osThreadCreate(osThread(chassistask), NULL);
 
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */
