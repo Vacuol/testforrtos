@@ -37,6 +37,8 @@ typedef __packed struct
 extern RC_ctrl_t rc_ctrl;
 extern uint8_t teledata_rx[18];
 
+extern const RC_ctrl_t *get_remote_control_point(void);
+
 void SBUS_TO_RC(uint8_t *sbus_buf, RC_ctrl_t *rc_ctrl);
 
 #endif

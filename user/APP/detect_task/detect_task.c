@@ -5,6 +5,6 @@ void detect_task(void const * argument)
 	for(;;)
 	{
 	
-		
+		osDelay(100);
 	}
 }

@@ -1,3 +1,20 @@
+/**
+  *******************************************************
+  * @file       remote.c/h
+  * @brief      遥控器处理，利用大疆的接收机，通过串口协议进行数据
+  *             传输，串口波特率为10000。此文件定义了遥控器相关的变量
+  *             
+  * 
+  * @note       该任务通过串口中断启动，不是freertos任务
+				目前，遥控器的热插拔稳定性较差，后续需要进一步改进
+
+  @verbatim
+  ==============================================================================
+
+  ==============================================================================
+  @endverbatim
+  *******************************************************
+  */
 #include "remote.h"
 
 //遥控器数据上限，大于整个值说明出了问题
@@ -7,7 +24,7 @@
 //make the data greater than 0
 static int16_t RC_abs(int16_t value);
 
-
+int32_t jcope;
 //遥控器变量
 RC_ctrl_t rc_ctrl;
 uint8_t teledata_rx[18];
@@ -59,6 +76,8 @@ error:
     return 1;
 }
 
+
+
 void SBUS_TO_RC(uint8_t *sbus_buf, RC_ctrl_t *rc_ctrl)
 {
 	
@@ -77,13 +96,15 @@ void SBUS_TO_RC(uint8_t *sbus_buf, RC_ctrl_t *rc_ctrl)
     rc_ctrl->key.v = sbus_buf[14] | (sbus_buf[15] << 8);                    //!< KeyBoard value
     rc_ctrl->key.v2 = sbus_buf[16] | (sbus_buf[17] << 8);                 //NULL
 	
+	
+	jcope = rc_ctrl->rc.ch[1];
 }	
 
-	
-	
-	
-	
-
+//返回遥控器控制变量，通过指针传递方式传递信息
+const RC_ctrl_t *get_remote_control_point(void)
+{
+    return &rc_ctrl;
+}
 
 static int16_t RC_abs(int16_t value)
 {

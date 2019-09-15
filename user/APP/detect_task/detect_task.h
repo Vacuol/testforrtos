@@ -6,7 +6,21 @@
 #include "main.h"
 #include "cmsis_os.h"
 
-extern void detect_task(void const * argument);
+//错误码以及对应设备顺序
+enum errorList
+{
+    DBUSTOE = 0,
+    YawGimbalMotorTOE,
+    PitchGimbalMotorTOE,
+    TriggerMotorTOE,
+    ChassisMotor1TOE,
+    ChassisMotor2TOE,
+    ChassisMotor3TOE,
+    ChassisMotor4TOE,
 
+    errorListLength,
+};
+
+extern void detect_task(void const * argument);
 
 #endif

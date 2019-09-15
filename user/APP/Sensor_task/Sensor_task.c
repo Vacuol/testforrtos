@@ -17,6 +17,8 @@
 #include "Sensor_task.h"
 #include <math.h>
 #include "usart_debug.h"
+#include "can.h"
+#include "can_receive.h"
 
 
 #define IMU_BOARD_INSTALL_SPIN_MATRIX                           \
@@ -53,8 +55,9 @@ int32_t Jcopelook4;
 void Sensor_task(void const * argument)
 {
 	uint32_t waitetime;
+	uint32_t Rxfifo;
 	uint8_t timecounter=0;
-	float output[8];
+	uint8_t output[8];
   /* USER CODE BEGIN StartLEDFlashTask */
 	osDelay(INS_TASK_INIT_TIME);
 	
