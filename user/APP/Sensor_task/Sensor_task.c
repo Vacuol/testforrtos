@@ -26,6 +26,13 @@
                                         {-1.0f, 0.0f, 0.0f},    \
                                         { 0.0f, 0.0f, 1.0f}    \
 
+static void MPU6500_GetData(void);
+static void IMU_Cali_Slove(float gyro[3], fp32 accel[3], fp32 mag[3], MPU6500 *mpu6500, IST8310 *ist8310);
+static void Offset_Getdata(void);
+static void Offset_Cal(void);
+static void MPU6500_GetAngle(void);
+static uint8_t MPU6500_Init(void);
+										
 static uint8_t MPU_id = 0;										
 static float Gyro_Scale_Factor[3][3] = {IMU_BOARD_INSTALL_SPIN_MATRIX}; //陀螺仪校准线性度
 static float gyro_cali_offset[3] ={0.0f, 0.0f, 0.0f};
@@ -55,9 +62,7 @@ int32_t Jcopelook4;
 void Sensor_task(void const * argument)
 {
 	uint32_t waitetime;
-	uint32_t Rxfifo;
 	uint8_t timecounter=0;
-	uint8_t output[8];
   /* USER CODE BEGIN StartLEDFlashTask */
 	osDelay(INS_TASK_INIT_TIME);
 	
@@ -111,7 +116,7 @@ const fp32 *get_MPU6500_Accel_Data_Point(void)
 }
 
 //Initialize the MPU6500
-uint8_t MPU6500_Init(void)
+static uint8_t MPU6500_Init(void)
 {
 	uint8_t index = 0;
 	uint8_t MPU6500_Init_Data[10][2] =
@@ -141,7 +146,7 @@ uint8_t MPU6500_Init(void)
 	return 0;
 }
 
-void MPU6500_GetData(void)
+static void MPU6500_GetData(void)
 {
 	uint8_t mpu_buff[21];
 	int16_t temp_imu_data = 0;
@@ -172,7 +177,7 @@ void MPU6500_GetData(void)
 
 }
 
-void IMU_Cali_Slove(float gyro[3], fp32 accel[3], fp32 mag[3], MPU6500 *mpu6500, IST8310 *ist8310)
+static void IMU_Cali_Slove(float gyro[3], fp32 accel[3], fp32 mag[3], MPU6500 *mpu6500, IST8310 *ist8310)
 {
 	
 	for (uint8_t i = 0; i < 3; i++)
@@ -184,7 +189,7 @@ void IMU_Cali_Slove(float gyro[3], fp32 accel[3], fp32 mag[3], MPU6500 *mpu6500,
 	
 }
 
-void Offset_Getdata(void)
+static void Offset_Getdata(void)
 {
 	uint16_t t=ZERODRIFT_TIMES;
 	
@@ -220,14 +225,14 @@ void Offset_Getdata(void)
 	
 }
 
-void Offset_Cal()
+static void Offset_Cal()
 {
 	mpu6500.GyroX -= mpu6500_off.GyroX;
 	mpu6500.GyroY -= mpu6500_off.GyroY;
 	mpu6500.GyroZ -= mpu6500_off.GyroZ;
 }
 
-void MPU6500_GetAngle()
+static void MPU6500_GetAngle()
 {
 	static fp32 accel_fliter_1[3] = {0.0f, 0.0f, 0.0f};
 	static fp32 accel_fliter_2[3] = {0.0f, 0.0f, 0.0f};

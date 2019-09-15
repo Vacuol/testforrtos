@@ -16,10 +16,24 @@
 #define YAW_SPEED_PID_MODE PID_POSITION
 #define YAW_SPEED_PID_MAX_OUT 30000.0f
 #define YAW_SPEED_PID_MAX_IOUT 5000.0f
+
 #define YAW_SPEED_PID_KP 2200.0f
 #define YAW_SPEED_PID_KI 20.0f
 #define YAW_SPEED_PID_KD 0.0f
 #endif
+
+//yaw 角度环 PID参数 外环位置式PID 
+#define YAE_ANGLE_PID_MODE_POSITION
+#ifdef YAE_ANGLE_PID_MODE_POSITION
+#define YAW_ANGLE_PID_MODE PID_POSITION
+#define YAW_ANGLE_PID_MAX_OUT 30000.0f
+#define YAW_ANGLE_PID_MAX_IOUT 5000.0f
+
+#define YAW_ANGLE_PID_KP 2200.0f
+#define YAW_ANGLE_PID_KI 20.0f
+#define YAW_ANGLE_PID_KD 0.0f
+#endif
+
 
 //pitch 速度环 PID参数以及 PID最大输出，积分输出
 #define PITCH_SPEED_PID_MODE_POSITION
@@ -27,15 +41,30 @@
 #define PITCH_SPEED_PID_MODE PID_POSITION
 #define PITCH_SPEED_PID_MAX_OUT 30000.0f
 #define PITCH_SPEED_PID_MAX_IOUT 5000.0f
+
 #define PITCH_SPEED_PID_KP 2200.0f
 #define PITCH_SPEED_PID_KI 20.0f
 #define PITCH_SPEED_PID_KD 0.0f
 #endif
 
+//pitch 角度环 PID参数 外环位置式PID 
+#define PITCH_ANGLE_PID_MODE_POSITION
+#ifdef PITCH_ANGLE_PID_MODE_POSITION
+#define PITCH_ANGLE_PID_MODE PID_POSITION
+#define PITCH_ANGLE_PID_MAX_OUT 30000.0f
+#define PITCH_ANGLE_PID_MAX_IOUT 5000.0f
+
+#define PITCH_ANGLE_PID_KP 2200.0f
+#define PITCH_ANGLE_PID_KI 20.0f
+#define PITCH_ANGLE_PID_KD 0.0f
+#endif
+
 typedef struct
 {
 	const motor_measure_t *gimbal_motor_measure;
+	float gyro;
 	PID_Regulator_t speed_pid;
+	PID_Regulator_t angle_pid;
 } Gimbal_Motor_t;
 
 typedef struct
