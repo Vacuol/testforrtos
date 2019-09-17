@@ -30,7 +30,7 @@ void PID_Init(PID_Regulator_t *pid, uint8_t mode,float maxout, float max_iout, f
 }
 
 
-float PID_Calc(PID_Regulator_t *pid)
+float PID_Calculate(PID_Regulator_t *pid)
 {
     if (pid == NULL)
     {

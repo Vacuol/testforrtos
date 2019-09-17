@@ -73,9 +73,14 @@
 typedef struct
 {
 	const motor_measure_t *gimbal_motor_measure;
+	
 	float gyro;
+	float gyro_set;
 	float absolute_angle;
+	float absolute_angle_set;
 	float relative_angle;
+	float relative_angle_set;
+	
 	PID_Regulator_t speed_pid;
 	PID_Regulator_t angle_pid;
 	uint16_t offset_ecd;

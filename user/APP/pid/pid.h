@@ -33,8 +33,8 @@ typedef struct
 	
 }PID_Regulator_t;
 
-extern float PID_Calc(PID_Regulator_t *pid);
-void PID_Init(PID_Regulator_t *pid, uint8_t mode,float maxout, float max_iout, float kp, float ki, float kd);
+extern float PID_Calculate(PID_Regulator_t *pid);
+extern void PID_Init(PID_Regulator_t *pid, uint8_t mode,float maxout, float max_iout, float kp, float ki, float kd);
 
 
 

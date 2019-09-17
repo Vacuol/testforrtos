@@ -9,8 +9,10 @@ static void Jscope_Watch_gimbal(void);
 Gimbal_Control_t gimbal_control;
 
 static void Gimbal_Init(Gimbal_Control_t *gimbal_init);
-static void GIMBAL_Feedback_Update(Gimbal_Control_t *gimbal_feedback_updata);
+static void Gimbal_Feedback_Update(Gimbal_Control_t *gimbal_feedback_updata);
 static float Motor_ecd_to_angle_Change(uint16_t ecd, uint16_t offset_ecd);
+static void Gimbal_Set_Contorl(Gimbal_Control_t *gimbal_set_control);
+static void Gimbal_PID_Calculate(Gimbal_Control_t *gimbal_pid);
 
 void gimbal_task(void const * argument)
 {
@@ -22,7 +24,13 @@ void gimbal_task(void const * argument)
 	waitetime = xTaskGetTickCount();
 	for (;;)
 	{
-		GIMBAL_Feedback_Update(&gimbal_control);
+		Gimbal_Feedback_Update(&gimbal_control);
+		Gimbal_Set_Contorl(&gimbal_control);
+		Gimbal_PID_Calculate(&gimbal_control);
+		
+		
+		
+		
 		
 		
 #if JSCOPE_WATCH_gimbal		
@@ -54,7 +62,7 @@ static void Gimbal_Init(Gimbal_Control_t *gimbal_init)
 	gimbal_init->yaw_motor.offset_ecd = YAW_OFFSET_ECD;
 }
 
-static void GIMBAL_Feedback_Update(Gimbal_Control_t *gimbal_feedback)
+static void Gimbal_Feedback_Update(Gimbal_Control_t *gimbal_feedback)
 {
 	if (gimbal_feedback == NULL)
     {
@@ -69,6 +77,8 @@ static void GIMBAL_Feedback_Update(Gimbal_Control_t *gimbal_feedback)
 	//云台角度数据更新
 	gimbal_feedback->pitch_motor.relative_angle = Motor_ecd_to_angle_Change(gimbal_feedback->pitch_motor.gimbal_motor_measure->ecd,
 																			gimbal_feedback->pitch_motor.offset_ecd);
+	gimbal_feedback->yaw_motor.relative_angle = Motor_ecd_to_angle_Change(gimbal_feedback->yaw_motor.gimbal_motor_measure->ecd,
+																		  gimbal_feedback->yaw_motor.offset_ecd);
 }
 
 
@@ -90,6 +100,25 @@ static float Motor_ecd_to_angle_Change(uint16_t ecd, uint16_t offset_ecd)
 
     return relative_ecd * Motor_Ecd_to_Rad;
 	
+}
+
+static void Gimbal_Set_Contorl(Gimbal_Control_t *gimbal_set_control)
+{
+	gimbal_set_control->pitch_motor.gyro_set = 100;
+	
+	gimbal_set_control->yaw_motor.gyro_set = 100;
+	
+}
+
+static void Gimbal_PID_Calculate(Gimbal_Control_t *gimbal_pid)
+{
+	gimbal_pid->pitch_motor.speed_pid.set = gimbal_pid->pitch_motor.gyro_set;
+	gimbal_pid->pitch_motor.speed_pid.fdb = gimbal_pid->pitch_motor.gyro;
+	PID_Calculate(&gimbal_pid->pitch_motor.speed_pid);
+	
+	gimbal_pid->yaw_motor.speed_pid.set = gimbal_pid->yaw_motor.gyro_set;
+	gimbal_pid->yaw_motor.speed_pid.fdb = gimbal_pid->yaw_motor.gyro;
+	PID_Calculate(&gimbal_pid->yaw_motor.speed_pid);
 }
 
 
