@@ -1,18 +1,22 @@
 #include "gimbal_task.h"
 
-#define JSCOPE_WATCH_gimbal 0
-#if JSCOPE_WATCH_gimbal
+#define GIMBAL_TEST_MODE 1
+#if GIMBAL_TEST_MODE
 //j-scope 帮助pid调参
-static void Jscope_Watch_gimbal(void);
+static void J_scope_gimbal_test(void);
 #endif
 
 Gimbal_Control_t gimbal_control;
 
 static void Gimbal_Init(Gimbal_Control_t *gimbal_init);
+<<<<<<< HEAD
 static void Gimbal_Feedback_Update(Gimbal_Control_t *gimbal_feedback_updata);
 static float Motor_ecd_to_angle_Change(uint16_t ecd, uint16_t offset_ecd);
 static void Gimbal_Set_Contorl(Gimbal_Control_t *gimbal_set_control);
 static void Gimbal_PID_Calculate(Gimbal_Control_t *gimbal_pid);
+=======
+static void GIMBAL_Feedback_Update(Gimbal_Control_t *gimbal_feedback_updata);
+>>>>>>> parent of 5313390... 浜戝彴鏁版嵁鏇存柊
 
 void gimbal_task(void const * argument)
 {
@@ -33,8 +37,8 @@ void gimbal_task(void const * argument)
 		
 		
 		
-#if JSCOPE_WATCH_gimbal		
-		Jscope_Watch_gimbal();
+#if GIMBAL_TEST_MODE		
+		J_scope_gimbal_test();
 #endif
 		
 		osDelayUntil(&waitetime, 1);
@@ -57,9 +61,7 @@ static void Gimbal_Init(Gimbal_Control_t *gimbal_init)
 	//pitch电机PID初始化
 	PID_Init(&gimbal_init->pitch_motor.speed_pid, PITCH_SPEED_PID_MODE,PITCH_SPEED_PID_MAX_OUT,PITCH_SPEED_PID_MAX_IOUT,PITCH_SPEED_PID_KP,PITCH_SPEED_PID_KI,PITCH_SPEED_PID_KD);
 	PID_Init(&gimbal_init->pitch_motor.angle_pid, PITCH_ANGLE_PID_MODE,PITCH_ANGLE_PID_MAX_OUT,PITCH_ANGLE_PID_MAX_IOUT,PITCH_ANGLE_PID_KP,PITCH_ANGLE_PID_KI,PITCH_ANGLE_PID_KD);
-	//云台电机中值初始化
-	gimbal_init->pitch_motor.offset_ecd = PITCH_OFFSET_ECD;
-	gimbal_init->yaw_motor.offset_ecd = YAW_OFFSET_ECD;
+	
 }
 
 static void Gimbal_Feedback_Update(Gimbal_Control_t *gimbal_feedback)
@@ -75,6 +77,7 @@ static void Gimbal_Feedback_Update(Gimbal_Control_t *gimbal_feedback)
 	gimbal_feedback->pitch_motor.absolute_angle = *(gimbal_feedback->gimbal_INT_angle_point + INS_PITCH_ADDRESS_OFFSET);
 	gimbal_feedback->yaw_motor.absolute_angle = *(gimbal_feedback->gimbal_INT_angle_point + INS_YAW_ADDRESS_OFFSET);
 	//云台角度数据更新
+<<<<<<< HEAD
 	gimbal_feedback->pitch_motor.relative_angle = Motor_ecd_to_angle_Change(gimbal_feedback->pitch_motor.gimbal_motor_measure->ecd,
 																			gimbal_feedback->pitch_motor.offset_ecd);
 	gimbal_feedback->yaw_motor.relative_angle = Motor_ecd_to_angle_Change(gimbal_feedback->yaw_motor.gimbal_motor_measure->ecd,
@@ -123,9 +126,16 @@ static void Gimbal_PID_Calculate(Gimbal_Control_t *gimbal_pid)
 
 
 #if JSCOPE_WATCH_gimbal
+=======
+	gimbal_feedback
+	
+}
+
+#if GIMBAL_TEST_MODE
+>>>>>>> parent of 5313390... 浜戝彴鏁版嵁鏇存柊
 int32_t jlook_p_gyro,jlook_y_gyro;
 int32_t jlook_p_angle,jlook_y_angle;
-static void Jscope_Watch_gimbal(void)
+static void J_scope_gimbal_test(void)
 {
 	jlook_p_gyro = gimbal_control.pitch_motor.gyro * 1000;
 	jlook_y_gyro = gimbal_control.yaw_motor.gyro * 1000;

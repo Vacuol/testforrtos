@@ -25,12 +25,6 @@
                                         { 0.0f, 1.0f, 0.0f},    \
                                         {-1.0f, 0.0f, 0.0f},    \
                                         { 0.0f, 0.0f, 1.0f}    \
-										
-#define JSCOPE_WATCH_sensor 0
-#if JSCOPE_WATCH_sensor
-//j-scope 帮助pid调参
-static void Jscope_Watch_sensor(void);
-#endif
 
 static void MPU6500_GetData(void);
 static void IMU_Cali_Slove(float gyro[3], fp32 accel[3], fp32 mag[3], MPU6500 *mpu6500, IST8310 *ist8310);
@@ -60,7 +54,10 @@ static float INS_quat[4] = {0.0f, 0.0f, 0.0f, 0.0f}; //四元数
 
 static MPU6500 mpu6500,mpu6500_off;
 static IST8310 ist8310;
-
+int32_t Jcopelook1;
+int32_t Jcopelook2;
+int32_t Jcopelook3;
+int32_t Jcopelook4;
 
 void Sensor_task(void const * argument)
 {
@@ -81,16 +78,16 @@ void Sensor_task(void const * argument)
   /* Infinite loop */
 	for(;;)
 	{
-	
+		Jcopelook1++;
+		if (Jcopelook1 == 1000) Jcopelook1 = 0;
 		MPU6500_GetData();
 		Offset_Cal();
 		IMU_Cali_Slove(INS_gyro, INS_accel, INS_mag, &mpu6500, &ist8310);
 		MPU6500_GetAngle();
 		
-#if JSCOPE_WATCH_sensor		
-		Jscope_Watch_sensor();
-#endif
-
+		Jcopelook2 = INS_Angle[0]*1000;
+		Jcopelook3 = INS_Angle[1]*1000;
+		Jcopelook4 = INS_Angle[2]*1000;
 		
 		timecounter++;
 		
@@ -282,19 +279,4 @@ static void MPU6500_GetAngle()
 		
 	}
 }
-
-#if JSCOPE_WATCH_sensor
-int32_t Jcopelook1;
-int32_t Jcopelook2;
-int32_t Jcopelook3;
-int32_t Jcopelook4;
-static void Jscope_Watch_sensor(void)
-{
-	Jcopelook2 = INS_Angle[0]*1000;
-	Jcopelook3 = INS_Angle[1]*1000;
-	Jcopelook4 = INS_Angle[2]*1000;
-	Jcopelook1++;
-	if (Jcopelook1 == 1000) Jcopelook1 = 0;
-}
-#endif
 
