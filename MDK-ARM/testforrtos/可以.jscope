@@ -17,22 +17,6 @@
             <Graph Show="1" />
             <Watch Show="1" />
         </Windows>
-        <SelectedSymbols>
-            <Symbol>
-                <Options Name="jcope1" Address="0x2000011C" Type="int" TypeID="12" Size="4" GraphColorRed="255" GraphColorGreen="215" GraphColorBlue="0" YMinSampled="0" YMaxSampled="0" YAvgSampled="0" Offset="4" ShowInGraph="1" YOffset="200" IsAutoConfig="1" YResolution="1" MaxValue="2" File="..\user\APP\can_receive\can_receive.c" Scope="0" DrawStyle="0" />
-            </Symbol>
-            <Symbol>
-                <Options Name="jcope2" Address="0x20000120" Type="int" TypeID="12" Size="4" GraphColorRed="0" GraphColorGreen="255" GraphColorBlue="0" YMinSampled="2" YMaxSampled="8191" YAvgSampled="631" Offset="8" ShowInGraph="1" YOffset="200" IsAutoConfig="0" YResolution="500" MaxValue="10000" File="..\user\APP\can_receive\can_receive.c" Scope="0" DrawStyle="0" />
-            </Symbol>
-            <Symbol>
-                <Options Name="jcope3" Address="0x20000124" Type="int" TypeID="12" Size="4" GraphColorRed="0" GraphColorGreen="0" GraphColorBlue="176" YMinSampled="2" YMaxSampled="8169" YAvgSampled="4669" Offset="12" ShowInGraph="1" YOffset="200" IsAutoConfig="1" YResolution="5000" MaxValue="10000" File="..\user\APP\can_receive\can_receive.c" Scope="0" DrawStyle="0" />
-            </Symbol>
-            <Symbol>
-                <Options Name="Jcopelook2" Address="0x2000009C" Type="int" TypeID="12" Size="4" GraphColorRed="160" GraphColorGreen="32" GraphColorBlue="240" YMinSampled="-1229" YMaxSampled="651" YAvgSampled="-1031" Offset="16" ShowInGraph="1" YOffset="260" IsAutoConfig="0" YResolution="200" MaxValue="2000" File="..\user\APP\Sensor_task\Sensor_task.c" Scope="0" DrawStyle="0" />
-            </Symbol>
-            <Symbol>
-                <Options Name="Jcopelook4" Address="0x200000A4" Type="int" TypeID="12" Size="4" GraphColorRed="255" GraphColorGreen="0" GraphColorBlue="0" YMinSampled="-302" YMaxSampled="1693" YAvgSampled="1383" Offset="20" ShowInGraph="1" YOffset="200" IsAutoConfig="1" YResolution="1000" MaxValue="2000" File="..\user\APP\Sensor_task\Sensor_task.c" Scope="0" DrawStyle="0" />
-            </Symbol>
-        </SelectedSymbols>
+        <SelectedSymbols />
     </Project>
 </JScopeProject>

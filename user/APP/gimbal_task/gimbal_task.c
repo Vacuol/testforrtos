@@ -22,7 +22,12 @@ void gimbal_task(void const * argument)
 	for (;;)
 	{
 		GIMBAL_Feedback_Update(&gimbal_control);
+		
+		
+#if GIMBAL_TEST_MODE		
 		J_scope_gimbal_test();
+#endif
+		
 		osDelayUntil(&waitetime, 1);
 	}
 }
@@ -52,18 +57,26 @@ static void GIMBAL_Feedback_Update(Gimbal_Control_t *gimbal_feedback)
     {
         return;
     }
-	//云台数据更新
-	gimbal_feedback->pitch_motor.gyro = *(gimbal_feedback->gimbal_INT_gyro_point  + INS_GYRO_Y_ADDRESS_OFFSET);
+	//云台角速度数据更新
+	gimbal_feedback->pitch_motor.gyro = *(gimbal_feedback->gimbal_INT_gyro_point  + INS_GYRO_X_ADDRESS_OFFSET);
 	gimbal_feedback->yaw_motor.gyro = *(gimbal_feedback->gimbal_INT_gyro_point  + INS_GYRO_Z_ADDRESS_OFFSET);
+	//陀螺仪角度数据更新
+	gimbal_feedback->pitch_motor.absolute_angle = *(gimbal_feedback->gimbal_INT_angle_point + INS_PITCH_ADDRESS_OFFSET);
+	gimbal_feedback->yaw_motor.absolute_angle = *(gimbal_feedback->gimbal_INT_angle_point + INS_YAW_ADDRESS_OFFSET);
+	//云台角度数据更新
+	gimbal_feedback
 	
 }
 
 #if GIMBAL_TEST_MODE
 int32_t jlook_p_gyro,jlook_y_gyro;
+int32_t jlook_p_angle,jlook_y_angle;
 static void J_scope_gimbal_test(void)
 {
-	jlook_p_gyro = gimbal_control.pitch_motor.gyro;
-	jlook_y_gyro = gimbal_control.yaw_motor.gyro;
+	jlook_p_gyro = gimbal_control.pitch_motor.gyro * 1000;
+	jlook_y_gyro = gimbal_control.yaw_motor.gyro * 1000;
+	jlook_p_angle = gimbal_control.pitch_motor.absolute_angle * 1000;
+	jlook_y_angle = gimbal_control.yaw_motor.absolute_angle * 1000;
 }
 #endif
 
