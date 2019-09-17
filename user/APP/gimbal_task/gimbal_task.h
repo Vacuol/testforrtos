@@ -10,6 +10,17 @@
 #include "Sensor_task.h"
 #include "pid.h"
 
+//云台电机初始值（中值）电机重新安装之后，需要重新设定此参数
+#define PITCH_OFFSET_ECD 1000
+#define YAW_OFFSET_ECD 1000
+
+//云台电机一周期及其一半
+#define FULL_RANGE 8192
+#define HALF_RANGE 4096
+
+//将云台一周期8192的精度转化为一周期2π
+#define Motor_Ecd_to_Rad 0.000766990394f
+
 //yaw 速度环 PID参数以及 PID最大输出，积分输出
 #define YAE_SPEED_PID_MODE_POSITION
 #ifdef YAE_SPEED_PID_MODE_POSITION
@@ -66,15 +77,13 @@ typedef struct
 	float gyro;
 	float gyro_set;
 	float absolute_angle;
-<<<<<<< HEAD
 	float absolute_angle_set;
 	float relative_angle;
 	float relative_angle_set;
 	
-=======
->>>>>>> parent of 5313390... 浜戝彴鏁版嵁鏇存柊
 	PID_Regulator_t speed_pid;
 	PID_Regulator_t angle_pid;
+	uint16_t offset_ecd;
 	
 } Gimbal_Motor_t;
 

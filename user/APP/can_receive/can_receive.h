@@ -52,7 +52,7 @@ extern const motor_measure_t *get_Chassis_Motor_Measure_Point(uint8_t i);
 //void Underpan_motor_output(int16_t iq1,int16_t iq2,int16_t iq3,int16_t iq4);
 //void Lift_motor_output(int16_t iq1,int16_t iq2);
 //void CatchPro_motor_output(int16_t iq1,int16_t iq2,int16_t iq3,int16_t iq4);
-extern void CAN_CMD_Gimbal(int16_t iq1,int16_t iq2,int16_t iq3);
+//void Cloud_motor_output(int16_t iq1,int16_t iq2);
 
 
 #endif

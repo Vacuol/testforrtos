@@ -3,7 +3,7 @@
 <title>Static Call Graph - [testforrtos\testforrtos.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image testforrtos\testforrtos.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060750: Last Updated: Tue Sep 17 21:21:03 2019
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060750: Last Updated: Tue Sep 17 21:29:02 2019
 <BR><P>
 <H3>Maximum Stack Usage =        344 bytes + Unknown(Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -600,8 +600,10 @@ Global Symbols
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> startup_stm32f427xx.o(RESET)
 </UL>
-<P><STRONG><a name="[8c]"></a>CAN1_Getdata</STRONG> (Thumb, 54 bytes, Stack size 0 bytes, can_receive.o(i.CAN1_Getdata))
-<BR><BR>[Calls]<UL><LI><a href="#[8d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;get_motor_measure
+<P><STRONG><a name="[8c]"></a>CAN1_Getdata</STRONG> (Thumb, 82 bytes, Stack size 8 bytes, can_receive.o(i.CAN1_Getdata))
+<BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = CAN1_Getdata
+</UL>
+<BR>[Calls]<UL><LI><a href="#[8d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;get_motor_measure
 </UL>
 <BR>[Called By]<UL><LI><a href="#[1e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CAN1_RX0_IRQHandler
 </UL>
@@ -1211,8 +1213,8 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[44]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DMA2_Stream2_IRQHandler
 </UL>
 
-<P><STRONG><a name="[6d]"></a>Sensor_task</STRONG> (Thumb, 182 bytes, Stack size 32 bytes, sensor_task.o(i.Sensor_task))
-<BR><BR>[Stack]<UL><LI>Max Depth = 304<LI>Call Chain = Sensor_task &rArr; MPU6500_GetAngle &rArr; AHRS_update &rArr; accel_comple_filter &rArr; accel_update_kp_ki
+<P><STRONG><a name="[6d]"></a>Sensor_task</STRONG> (Thumb, 262 bytes, Stack size 40 bytes, sensor_task.o(i.Sensor_task))
+<BR><BR>[Stack]<UL><LI>Max Depth = 312<LI>Call Chain = Sensor_task &rArr; MPU6500_GetAngle &rArr; AHRS_update &rArr; accel_comple_filter &rArr; accel_update_kp_ki
 </UL>
 <BR>[Calls]<UL><LI><a href="#[d8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osDelay
 <LI><a href="#[ed]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ist8310_init

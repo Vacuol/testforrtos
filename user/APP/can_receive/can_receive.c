@@ -8,6 +8,12 @@ CAN_RxHeaderTypeDef  Rx1Message;
 CAN_TxHeaderTypeDef  Tx1Message;
 
 uint32_t pTxMailbox;
+int32_t jcope1;
+int32_t jcope2;
+int32_t jcope3;
+int32_t jcope4;
+
+
 
 void CAN1_Init()						
 {
@@ -93,6 +99,7 @@ void CAN1_Getdata(CAN_RxHeaderTypeDef *pHeader,uint8_t aData[])
 		{
 			//处理云台电机数据
 			get_motor_measure(&motor_yaw, aData);
+			jcope2 = motor_yaw.ecd;
 			//记录时间
 			//etectHook(YawGimbalMotorTOE);
 			break;
@@ -101,6 +108,7 @@ void CAN1_Getdata(CAN_RxHeaderTypeDef *pHeader,uint8_t aData[])
 		{
 			//处理云台电机数据
 			get_motor_measure(&motor_pit, aData);
+			jcope1 = motor_pit.ecd;
 			//记录时间
 			//DetectHook(YawGimbalMotorTOE);
 			break;
@@ -115,6 +123,7 @@ void CAN1_Getdata(CAN_RxHeaderTypeDef *pHeader,uint8_t aData[])
 			i = pHeader->StdId - CAN_3508_M1_ID;
 			//处理电机数据
 			get_motor_measure(&motor_chassis[i], aData);
+			jcope3 = motor_chassis[1].ecd;
 			//记录时间
 			//DetectHook(ChassisMotor1TOE + i);
 			break;
@@ -151,7 +160,7 @@ void Underpan_motor_output(int16_t iq1,int16_t iq2,int16_t iq3,int16_t iq4)
 	HAL_CAN_AddTxMessage(&hcan1, &Tx1Message,  TxData, &pTxMailbox);
 }
 
-void CAN_CMD_Gimbal(int16_t iq1,int16_t iq2,int16_t iq3)
+void Cloud_motor_output(int16_t iq1,int16_t iq2,int16_t iq3)
 {
 	static uint8_t TxData[8];
 	Tx1Message.StdId = 0x1ff;
