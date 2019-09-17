@@ -1,15 +1,16 @@
 #include "gimbal_task.h"
 
-#define GIMBAL_TEST_MODE 1
-#if GIMBAL_TEST_MODE
+#define JSCOPE_WATCH_gimbal 0
+#if JSCOPE_WATCH_gimbal
 //j-scope 帮助pid调参
-static void J_scope_gimbal_test(void);
+static void Jscope_Watch_gimbal(void);
 #endif
 
 Gimbal_Control_t gimbal_control;
 
 static void Gimbal_Init(Gimbal_Control_t *gimbal_init);
 static void GIMBAL_Feedback_Update(Gimbal_Control_t *gimbal_feedback_updata);
+static float Motor_ecd_to_angle_Change(uint16_t ecd, uint16_t offset_ecd);
 
 void gimbal_task(void const * argument)
 {
@@ -24,8 +25,8 @@ void gimbal_task(void const * argument)
 		GIMBAL_Feedback_Update(&gimbal_control);
 		
 		
-#if GIMBAL_TEST_MODE		
-		J_scope_gimbal_test();
+#if JSCOPE_WATCH_gimbal		
+		Jscope_Watch_gimbal();
 #endif
 		
 		osDelayUntil(&waitetime, 1);
@@ -48,7 +49,9 @@ static void Gimbal_Init(Gimbal_Control_t *gimbal_init)
 	//pitch电机PID初始化
 	PID_Init(&gimbal_init->pitch_motor.speed_pid, PITCH_SPEED_PID_MODE,PITCH_SPEED_PID_MAX_OUT,PITCH_SPEED_PID_MAX_IOUT,PITCH_SPEED_PID_KP,PITCH_SPEED_PID_KI,PITCH_SPEED_PID_KD);
 	PID_Init(&gimbal_init->pitch_motor.angle_pid, PITCH_ANGLE_PID_MODE,PITCH_ANGLE_PID_MAX_OUT,PITCH_ANGLE_PID_MAX_IOUT,PITCH_ANGLE_PID_KP,PITCH_ANGLE_PID_KI,PITCH_ANGLE_PID_KD);
-	
+	//云台电机中值初始化
+	gimbal_init->pitch_motor.offset_ecd = PITCH_OFFSET_ECD;
+	gimbal_init->yaw_motor.offset_ecd = YAW_OFFSET_ECD;
 }
 
 static void GIMBAL_Feedback_Update(Gimbal_Control_t *gimbal_feedback)
@@ -64,14 +67,36 @@ static void GIMBAL_Feedback_Update(Gimbal_Control_t *gimbal_feedback)
 	gimbal_feedback->pitch_motor.absolute_angle = *(gimbal_feedback->gimbal_INT_angle_point + INS_PITCH_ADDRESS_OFFSET);
 	gimbal_feedback->yaw_motor.absolute_angle = *(gimbal_feedback->gimbal_INT_angle_point + INS_YAW_ADDRESS_OFFSET);
 	//云台角度数据更新
-	gimbal_feedback
+	gimbal_feedback->pitch_motor.relative_angle = Motor_ecd_to_angle_Change(gimbal_feedback->pitch_motor.gimbal_motor_measure->ecd,
+																			gimbal_feedback->pitch_motor.offset_ecd);
+}
+
+
+//将机器人水平正前方作为云台电机的零点
+static float Motor_ecd_to_angle_Change(uint16_t ecd, uint16_t offset_ecd) 
+{
+	//计算当前位置与零点的差
+	int32_t relative_ecd = ecd - offset_ecd;
+	//若差值大于4096，则将结果减去8192，说明电机此时在零点负一侧
+    if (relative_ecd > HALF_RANGE)
+    {
+        relative_ecd -= FULL_RANGE;
+    }
+	//若差值小于-4096，则将结果加上8192，说明电机此时在零点正一侧
+    else if (relative_ecd < -HALF_RANGE)
+    {
+        relative_ecd += FULL_RANGE;
+    }
+
+    return relative_ecd * Motor_Ecd_to_Rad;
 	
 }
 
-#if GIMBAL_TEST_MODE
+
+#if JSCOPE_WATCH_gimbal
 int32_t jlook_p_gyro,jlook_y_gyro;
 int32_t jlook_p_angle,jlook_y_angle;
-static void J_scope_gimbal_test(void)
+static void Jscope_Watch_gimbal(void)
 {
 	jlook_p_gyro = gimbal_control.pitch_motor.gyro * 1000;
 	jlook_y_gyro = gimbal_control.yaw_motor.gyro * 1000;
