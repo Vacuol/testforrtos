@@ -48,6 +48,7 @@
 "testforrtos\chassis_task.o"
 "testforrtos\gimbal_task.o"
 "testforrtos\pid.o"
+"testforrtos\filter.o"
 "..\user\DSP\arm_cortexM4lf_math.lib"
 "testforrtos\ahrs_middleware.o"
 "..\user\AHRS\AHRS.lib"

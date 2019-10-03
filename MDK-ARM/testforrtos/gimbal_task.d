@@ -59,3 +59,4 @@ testforrtos\gimbal_task.o: ..\user\mpu6500\ist8310.h
 testforrtos\gimbal_task.o: ..\user\mpu6500\mpu6500.h
 testforrtos\gimbal_task.o: ..\user\APP\pid\pid.h
 testforrtos\gimbal_task.o: D:\soft\keil5\ARM\ARMCC\Bin\..\include\math.h
+testforrtos\gimbal_task.o: ..\user\APP\filter\filter.h

@@ -8,12 +8,6 @@ CAN_RxHeaderTypeDef  Rx1Message;
 CAN_TxHeaderTypeDef  Tx1Message;
 
 uint32_t pTxMailbox;
-int32_t jcope1;
-int32_t jcope2;
-int32_t jcope3;
-int32_t jcope4;
-
-
 
 void CAN1_Init()						
 {
@@ -33,7 +27,6 @@ void CAN1_Init()
 	canfilter.SlaveStartFilterBank = 14;
 	//use different filter for can1&can2
 	canfilter.FilterBank=0;
-  
 
 	HAL_CAN_ConfigFilter(&hcan1,&canfilter);
 	
@@ -97,22 +90,20 @@ void CAN1_Getdata(CAN_RxHeaderTypeDef *pHeader,uint8_t aData[])
 	{
 		case CAN_YAW_MOTOR_ID:
 		{
-			//处理云台电机数据
+			//处理云台电机数据		
 			get_motor_measure(&motor_yaw, aData);
-			jcope2 = motor_yaw.ecd;
 			//记录时间
 			//etectHook(YawGimbalMotorTOE);
-			break;
-		}
+			
+		}break;
 		case CAN_PIT_MOTOR_ID:
 		{
 			//处理云台电机数据
 			get_motor_measure(&motor_pit, aData);
-			jcope1 = motor_pit.ecd;
 			//记录时间
 			//DetectHook(YawGimbalMotorTOE);
-			break;
-		}
+			
+		}break;
 		case CAN_3508_M1_ID:
 		case CAN_3508_M2_ID:
 		case CAN_3508_M3_ID:
@@ -123,11 +114,14 @@ void CAN1_Getdata(CAN_RxHeaderTypeDef *pHeader,uint8_t aData[])
 			i = pHeader->StdId - CAN_3508_M1_ID;
 			//处理电机数据
 			get_motor_measure(&motor_chassis[i], aData);
-			jcope3 = motor_chassis[1].ecd;
 			//记录时间
 			//DetectHook(ChassisMotor1TOE + i);
-			break;
-		}
+			
+		}break;
+		default:
+		{
+			
+		}break;
 	}
 }
 
@@ -160,7 +154,7 @@ void Underpan_motor_output(int16_t iq1,int16_t iq2,int16_t iq3,int16_t iq4)
 	HAL_CAN_AddTxMessage(&hcan1, &Tx1Message,  TxData, &pTxMailbox);
 }
 
-void Cloud_motor_output(int16_t iq1,int16_t iq2,int16_t iq3)
+void CAN_CMD_Gimbal(int16_t pitch,int16_t yaw)
 {
 	static uint8_t TxData[8];
 	Tx1Message.StdId = 0x1ff;
@@ -168,12 +162,12 @@ void Cloud_motor_output(int16_t iq1,int16_t iq2,int16_t iq3)
 	Tx1Message.RTR = CAN_RTR_DATA;
 	Tx1Message.DLC = 0x08;
 	
-	TxData[0] = iq1 >> 8;
-	TxData[1] = iq1;
-	TxData[2] = iq2 >> 8;
-	TxData[3] = iq2;
-	TxData[4] = iq3 >> 8;
-	TxData[5] = iq3;
+	TxData[0] = pitch >> 8;
+	TxData[1] = pitch;
+	TxData[2] = yaw >> 8;
+	TxData[3] = yaw;
+//	TxData[4] = iq3 >> 8;
+//	TxData[5] = iq3;
 
 	HAL_CAN_AddTxMessage(&hcan1, &Tx1Message,  TxData, &pTxMailbox);
 }

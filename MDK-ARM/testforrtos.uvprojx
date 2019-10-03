@@ -312,7 +312,7 @@
           </ArmAdsMisc>
           <Cads>
             <interw>1</interw>
-            <Optim>4</Optim>
+            <Optim>1</Optim>
             <oTime>0</oTime>
             <SplitLS>0</SplitLS>
             <OneElfS>1</OneElfS>
@@ -338,7 +338,7 @@
               <MiscControls></MiscControls>
               <Define>USE_HAL_DRIVER,STM32F427xx,ARM_MATH_CM4,__TARGET_FPU_VFP,__FPU_PRESENT=1</Define>
               <Undefine></Undefine>
-              <IncludePath>../Inc;../Drivers/STM32F4xx_HAL_Driver/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy;../Drivers/CMSIS/Device/ST/STM32F4xx/Include;../Drivers/CMSIS/Include;../Middlewares/Third_Party/FreeRTOS/Source/include;../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS;../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F;..\user\APP\LED_task;..\user\APP\detect_task;..\user\APP\remote_control;..\user\AHRS;..\user\mpu6500;..\user\DSP\Include;..\user\APP\Sensor_task;..\user\APP\usart_debug;..\user\APP\can_receive;..\user\APP\gimble_task;..\user\APP\pid</IncludePath>
+              <IncludePath>../Inc;../Drivers/STM32F4xx_HAL_Driver/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy;../Drivers/CMSIS/Device/ST/STM32F4xx/Include;../Drivers/CMSIS/Include;../Middlewares/Third_Party/FreeRTOS/Source/include;../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS;../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F;..\user\APP\LED_task;..\user\APP\detect_task;..\user\APP\remote_control;..\user\AHRS;..\user\mpu6500;..\user\DSP\Include;..\user\APP\Sensor_task;..\user\APP\usart_debug;..\user\APP\can_receive;..\user\APP\gimbal_task;..\user\APP\pid;..\user\APP\filter;..\user\APP\chassis_task</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -651,6 +651,11 @@
               <FileName>pid.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\user\APP\pid\pid.c</FilePath>
+            </File>
+            <File>
+              <FileName>filter.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\user\APP\filter\filter.c</FilePath>
             </File>
           </Files>
         </Group>

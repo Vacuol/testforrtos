@@ -10,9 +10,11 @@
 #include "Sensor_task.h"
 #include "pid.h"
 
+//gimbaltask控制周期
+#define GIMBAL_TASK_CONTROL_TIME 1
 //云台电机初始值（中值）电机重新安装之后，需要重新设定此参数
-#define PITCH_OFFSET_ECD 1000
-#define YAW_OFFSET_ECD 1000
+#define PITCH_OFFSET_ECD 800
+#define YAW_OFFSET_ECD 600
 
 //云台电机一周期及其一半
 #define FULL_RANGE 8192
@@ -25,11 +27,11 @@
 #define YAE_SPEED_PID_MODE_POSITION
 #ifdef YAE_SPEED_PID_MODE_POSITION
 #define YAW_SPEED_PID_MODE PID_POSITION
-#define YAW_SPEED_PID_MAX_OUT 30000.0f
-#define YAW_SPEED_PID_MAX_IOUT 5000.0f
+#define YAW_SPEED_PID_MAX_OUT 20000.0f
+#define YAW_SPEED_PID_MAX_IOUT 2000.0f
 
-#define YAW_SPEED_PID_KP 2200.0f
-#define YAW_SPEED_PID_KI 20.0f
+#define YAW_SPEED_PID_KP 6000.0f
+#define YAW_SPEED_PID_KI 10.0f
 #define YAW_SPEED_PID_KD 0.0f
 #endif
 
@@ -37,12 +39,12 @@
 #define YAE_ANGLE_PID_MODE_POSITION
 #ifdef YAE_ANGLE_PID_MODE_POSITION
 #define YAW_ANGLE_PID_MODE PID_POSITION
-#define YAW_ANGLE_PID_MAX_OUT 30000.0f
-#define YAW_ANGLE_PID_MAX_IOUT 5000.0f
+#define YAW_ANGLE_PID_MAX_OUT 3.0f
+#define YAW_ANGLE_PID_MAX_IOUT 0.30f
 
-#define YAW_ANGLE_PID_KP 2200.0f
-#define YAW_ANGLE_PID_KI 20.0f
-#define YAW_ANGLE_PID_KD 0.0f
+#define YAW_ANGLE_PID_KP 20.0f
+#define YAW_ANGLE_PID_KI 0.1f
+#define YAW_ANGLE_PID_KD -1.0f
 #endif
 
 
@@ -50,11 +52,11 @@
 #define PITCH_SPEED_PID_MODE_POSITION
 #ifdef PITCH_SPEED_PID_MODE_POSITION
 #define PITCH_SPEED_PID_MODE PID_POSITION
-#define PITCH_SPEED_PID_MAX_OUT 30000.0f
-#define PITCH_SPEED_PID_MAX_IOUT 5000.0f
+#define PITCH_SPEED_PID_MAX_OUT 25000.0f
+#define PITCH_SPEED_PID_MAX_IOUT 2000.0f
 
-#define PITCH_SPEED_PID_KP 2200.0f
-#define PITCH_SPEED_PID_KI 20.0f
+#define PITCH_SPEED_PID_KP 6000.0f
+#define PITCH_SPEED_PID_KI 10.0f
 #define PITCH_SPEED_PID_KD 0.0f
 #endif
 
@@ -62,12 +64,12 @@
 #define PITCH_ANGLE_PID_MODE_POSITION
 #ifdef PITCH_ANGLE_PID_MODE_POSITION
 #define PITCH_ANGLE_PID_MODE PID_POSITION
-#define PITCH_ANGLE_PID_MAX_OUT 30000.0f
-#define PITCH_ANGLE_PID_MAX_IOUT 5000.0f
+#define PITCH_ANGLE_PID_MAX_OUT 4.10f
+#define PITCH_ANGLE_PID_MAX_IOUT 0.30f
 
-#define PITCH_ANGLE_PID_KP 2200.0f
-#define PITCH_ANGLE_PID_KI 20.0f
-#define PITCH_ANGLE_PID_KD 0.0f
+#define PITCH_ANGLE_PID_KP 20.0f
+#define PITCH_ANGLE_PID_KI 0.1f
+#define PITCH_ANGLE_PID_KD -1.0f
 #endif
 
 typedef struct
@@ -97,6 +99,7 @@ typedef struct
 	
 } Gimbal_Control_t;
 
- extern void gimbal_task(void const * argument);
-
+extern void gimbal_task(void const * argument);
+extern const Gimbal_Motor_t *get_yaw_motor_point(void);
+extern const Gimbal_Motor_t *get_pitch_motor_point(void);
 #endif

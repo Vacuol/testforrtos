@@ -48,3 +48,16 @@ testforrtos\chassis_task.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/t
 testforrtos\chassis_task.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/queue.h
 testforrtos\chassis_task.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/semphr.h
 testforrtos\chassis_task.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/event_groups.h
+testforrtos\chassis_task.o: ..\user\APP\can_receive\can_receive.h
+testforrtos\chassis_task.o: ../Inc/can.h
+testforrtos\chassis_task.o: ..\user\APP\remote_control\remote.h
+testforrtos\chassis_task.o: ..\user\APP\gimbal_task\gimbal_task.h
+testforrtos\chassis_task.o: ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.h
+testforrtos\chassis_task.o: ..\user\APP\Sensor_task\Sensor_task.h
+testforrtos\chassis_task.o: ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.h
+testforrtos\chassis_task.o: ..\user\AHRS\AHRS.h
+testforrtos\chassis_task.o: ..\user\AHRS\AHRS_MiddleWare.h
+testforrtos\chassis_task.o: ..\user\mpu6500\ist8310.h
+testforrtos\chassis_task.o: ..\user\mpu6500\mpu6500.h
+testforrtos\chassis_task.o: ..\user\APP\pid\pid.h
+testforrtos\chassis_task.o: D:\soft\keil5\ARM\ARMCC\Bin\..\include\math.h
