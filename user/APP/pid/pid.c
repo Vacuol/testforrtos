@@ -30,7 +30,7 @@ void PID_Init(PID_Regulator_t *pid, uint8_t mode,float maxout, float max_iout, f
 }
 
 
-float PID_Calculate(PID_Regulator_t *pid)
+float PID_Calculate(PID_Regulator_t *pid, float fdb, float set)
 {
     if (pid == NULL)
     {
@@ -40,7 +40,9 @@ float PID_Calculate(PID_Regulator_t *pid)
     pid->err[2] = pid->err[1];
     pid->err[1] = pid->err[0];
 
-    pid->err[0] = pid->set - pid->fdb;
+	pid->set = set;
+    pid->fdb = fdb;
+    pid->err[0] = set - fdb;
     if (pid->mode == PID_POSITION)
     {
         pid->Pout = pid->kp * pid->err[0];

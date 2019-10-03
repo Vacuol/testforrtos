@@ -10,6 +10,15 @@
 #include "can_receive.h"
 #include "remote.h"
 #include "gimbal_task.h"
+#include "pid.h"
+
+//
+#define CHASSIS_PID_MODE 0
+#define CHASSIS_PID_MAX_OUT 0
+#define CHASSIS_PID_MAX_IOUT 0
+#define CHASSIS_PID_KP 0
+#define CHASSIS_PID_KI 0
+#define CHASSIS_PID_KD 0
 
 typedef struct
 {

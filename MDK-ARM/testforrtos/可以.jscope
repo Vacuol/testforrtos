@@ -10,7 +10,7 @@
             <DataFile Name="" />
             <RawFile Name="" />
             <Scope>
-                <Options TimeResolutionUs="10000" />
+                <Options TimeResolutionUs="1000000" />
             </Scope>
         </Configuration>
         <Windows>
@@ -19,10 +19,13 @@
         </Windows>
         <SelectedSymbols>
             <Symbol>
-                <Options Name="jlook_p_gyro" Address="0x20000138" Type="int" TypeID="12" Size="4" GraphColorRed="255" GraphColorGreen="215" GraphColorBlue="0" YMinSampled="0" YMaxSampled="0" YAvgSampled="0" Offset="4" ShowInGraph="1" YOffset="200" IsAutoConfig="1" YResolution="1000000000" MaxValue="2000000000" File="..\user\APP\gimbal_task\gimbal_task.c" Scope="0" DrawStyle="0" />
+                <Options Name="jlook_p_gyro" Address="0x20000238" Type="int" TypeID="12" Size="4" GraphColorRed="255" GraphColorGreen="215" GraphColorBlue="0" YMinSampled="-1259" YMaxSampled="2213" YAvgSampled="656" Offset="4" ShowInGraph="1" YOffset="200" IsAutoConfig="1" YResolution="2000" MaxValue="4000" File="..\user\APP\gimbal_task\gimbal_task.c" Scope="0" DrawStyle="0" />
             </Symbol>
             <Symbol>
-                <Options Name="jlook_y_gyro" Address="0x2000013C" Type="int" TypeID="12" Size="4" GraphColorRed="0" GraphColorGreen="255" GraphColorBlue="0" YMinSampled="0" YMaxSampled="0" YAvgSampled="0" Offset="8" ShowInGraph="1" YOffset="200" IsAutoConfig="1" YResolution="1000000000" MaxValue="2000000000" File="..\user\APP\gimbal_task\gimbal_task.c" Scope="0" DrawStyle="0" />
+                <Options Name="jlook_p_y" Address="0x20000248" Type="int" TypeID="12" Size="4" GraphColorRed="0" GraphColorGreen="255" GraphColorBlue="0" YMinSampled="0" YMaxSampled="0" YAvgSampled="0" Offset="8" ShowInGraph="1" YOffset="200" IsAutoConfig="1" YResolution="1" MaxValue="2" File="..\user\APP\gimbal_task\gimbal_task.c" Scope="0" DrawStyle="0" />
+            </Symbol>
+            <Symbol>
+                <Options Name="jlook_y_gyro" Address="0x2000023C" Type="int" TypeID="12" Size="4" GraphColorRed="0" GraphColorGreen="0" GraphColorBlue="255" YMinSampled="-352" YMaxSampled="460" YAvgSampled="-76" Offset="12" ShowInGraph="1" YOffset="200" IsAutoConfig="1" YResolution="500" MaxValue="1000" File="..\user\APP\gimbal_task\gimbal_task.c" Scope="0" DrawStyle="0" />
             </Symbol>
         </SelectedSymbols>
     </Project>
