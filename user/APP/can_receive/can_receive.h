@@ -49,7 +49,7 @@ extern const motor_measure_t *get_Trigger_Motor_Measure_Point(void);
 extern const motor_measure_t *get_Chassis_Motor_Measure_Point(uint8_t i);
 
 //void HAL_CAN_RxFifo1MsgPendingCallback(CAN_HandleTypeDef *hcan);
-//void Underpan_motor_output(int16_t iq1,int16_t iq2,int16_t iq3,int16_t iq4);
+extern void Underpan_motor_output(int16_t iq1,int16_t iq2,int16_t iq3,int16_t iq4);
 //void Lift_motor_output(int16_t iq1,int16_t iq2);
 //void CatchPro_motor_output(int16_t iq1,int16_t iq2,int16_t iq3,int16_t iq4);
 extern void CAN_CMD_Gimbal(int16_t iq1,int16_t iq2);

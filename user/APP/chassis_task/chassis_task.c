@@ -6,6 +6,7 @@ static Chassis_Control_t chassis_control;
 static void Chassis_Init(Chassis_Control_t *chassis_init);
 static void Chassis_Feedback_Update(Chassis_Control_t *chassis_feedback);
 static void Chassis_Set_Control(Chassis_Control_t *chassis_set);
+static void Chassis_PID(Chassis_Control_t *chassis_pid);
 
 void chassis_task(void const * argument)
 { 
@@ -22,6 +23,12 @@ void chassis_task(void const * argument)
 	{
 		Chassis_Feedback_Update(&chassis_control);
 		Chassis_Set_Control(&chassis_control);
+		Chassis_PID(&chassis_control);
+		
+		Underpan_motor_output(chassis_control.chassis_motor[0].speed_pid.out
+							,chassis_control.chassis_motor[1].speed_pid.out
+							,chassis_control.chassis_motor[2].speed_pid.out
+							,chassis_control.chassis_motor[3].speed_pid.out);
 		
 		osDelayUntil(&waitetime, GIMBAL_TASK_CONTROL_TIME);
 	}
@@ -29,6 +36,7 @@ void chassis_task(void const * argument)
 
 void Chassis_Init(Chassis_Control_t *chassis_init)
 {
+	uint8_t i;
 	if (chassis_init == NULL)
 	{
 		return ;
@@ -40,8 +48,8 @@ void Chassis_Init(Chassis_Control_t *chassis_init)
 	chassis_init->chassis_yaw_motor = get_yaw_motor_point();	
 	chassis_init->chassis_pitch_motor = get_pitch_motor_point();
 	//电机PID初始化
-	uint8_t i;
-	for (uint8_t i=0 ; i<4 ; i++)
+	
+	for (i=0 ; i<4 ; i++)
 	{
 		chassis_init->chassis_motor[i].chassis_motor_measure = get_Chassis_Motor_Measure_Point(i);
 		PID_Init(&chassis_init->chassis_motor[i].speed_pid, CHASSIS_PID_MODE,CHASSIS_PID_MAX_OUT,CHASSIS_PID_MAX_IOUT,CHASSIS_PID_KP,CHASSIS_PID_KI,CHASSIS_PID_KD);
@@ -67,10 +75,33 @@ static void Chassis_Feedback_Update(Chassis_Control_t *chassis_feedback)
 
 static void Chassis_Set_Control(Chassis_Control_t *chassis_set)
 {
+	uint8_t i;
+	if (chassis_set == NULL)
+    {
+        return;
+    }
+	
+	for (i=0;i<4;i++)
+	{
+		chassis_set->chassis_motor[i].speed_set = 3000;
+	}
 	
 }
 
-
+static void Chassis_PID(Chassis_Control_t *chassis_pid)
+{
+	uint8_t i;
+	if (chassis_pid == NULL)
+    {
+        return;
+    }
+	
+	for (i=0;i<4;i++)
+	{
+		PID_Calculate(&chassis_pid->chassis_motor[i].speed_pid, 
+			chassis_pid->chassis_motor[i].speed, chassis_pid->chassis_motor[i].speed_set);
+	}
+}
 
 
 

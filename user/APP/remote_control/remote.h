@@ -16,7 +16,7 @@ typedef __packed struct
         {
                 int16_t ch[4];
                 char sleft;
-								char sright;
+				char sright;
         } rc;
         __packed struct
         {

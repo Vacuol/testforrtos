@@ -10,7 +10,11 @@ typedef struct{
 
 extern Filter_t MPUz50Hz,MPUy50Hz,MPUx50Hz;
 extern Filter_t PIDOUTPUT50Hz;
-void Chebyshev50HzLPF(Filter_t *F);
-void Chebyshev100HzLPF(Filter_t *F);
+extern void Chebyshev50HzLPF(Filter_t *F);
+extern void Chebyshev100HzLPF(Filter_t *F);
+extern void ControlDesiner(Filter_t *F);
+extern void ControlDesiner2(Filter_t *F);
+extern void Corrector_Yaw_Speed(Filter_t *F);
+extern void Corrector_Yaw_Position(Filter_t *F);
 
 #endif
