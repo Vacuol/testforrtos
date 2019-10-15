@@ -55,3 +55,5 @@ testforrtos\main.o: ../Inc/gpio.h
 testforrtos\main.o: ..\user\APP\can_receive\can_receive.h
 testforrtos\main.o: ..\user\APP\remote_control\remote.h
 testforrtos\main.o: ..\user\mpu6500\ist8310.h
+testforrtos\main.o: ..\user\APP\auto_aim\auto_aim_task.h
+testforrtos\main.o: ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.h

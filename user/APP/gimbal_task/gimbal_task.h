@@ -92,6 +92,7 @@ typedef struct
 	float absolute_angle_set;
 	float relative_angle;
 	float relative_angle_set;
+	float offset_AbToRe;
 	
 	PID_Regulator_t speed_pid;
 	PID_Regulator_t angle_pid;

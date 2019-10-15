@@ -24,7 +24,6 @@
 //make the data greater than 0
 static int16_t RC_abs(int16_t value);
 
-int32_t jcope;
 //遥控器变量
 RC_ctrl_t rc_ctrl;
 uint8_t teledata_rx[18];
@@ -72,7 +71,7 @@ error:
     rc_ctrl.mouse.press_l = 0;
     rc_ctrl.mouse.press_r = 0;
     rc_ctrl.key.v = 0;
-		rc_ctrl.key.v2 = 0;
+	rc_ctrl.key.v2 = 0;
     return 1;
 }
 
@@ -97,7 +96,6 @@ void SBUS_TO_RC(uint8_t *sbus_buf, RC_ctrl_t *rc_ctrl)
     rc_ctrl->key.v2 = sbus_buf[16] | (sbus_buf[17] << 8);                 //NULL
 	
 	
-	jcope = rc_ctrl->rc.ch[1];
 }	
 
 //返回遥控器控制变量，通过指针传递方式传递信息

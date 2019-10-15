@@ -23,7 +23,7 @@
 static void Jscope_Watch_gimbal(void);
 #endif
 	
-#define SYSTEM_IDENTIFICATION 1
+#define SYSTEM_IDENTIFICATION 0
 #if SYSTEM_IDENTIFICATION
 uint16_t point_all,t;
 float once_lenth,x,y;
@@ -35,7 +35,7 @@ float fs[]={
 18.0, 18.5, 19.0, 19.5, 20.0, 20.5, 21.0, 21.5,
 22.0,24, 26, 28, 30, 32, 34, 36, 38,50, 60, 70, 
 80, 90, 100, 110, 120, 200, 250, 333};
-#define GYRO_MAX 2;
+
 #endif 
 
 Gimbal_Control_t gimbal_control;
@@ -46,6 +46,7 @@ Filter_t corrector_yaw_speed,corrector_yaw_position;
 static void Gimbal_Init(Gimbal_Control_t *gimbal_init);
 static void Gimbal_Position_Reset(Gimbal_Control_t *gimbal_pos_reset);
 static void Gimbal_Feedback_Update(Gimbal_Control_t *gimbal_feedback_updata);
+static float Motor_Absolute_to_Relative_Change(float angle,float offset);
 static float Motor_ecd_to_angle_Change(uint16_t ecd, uint16_t offset_ecd);
 static void Gimbal_Set_Contorl(Gimbal_Control_t *gimbal_set_control);
 static void Gimbal_PID(Gimbal_Control_t *gimbal_pid);
@@ -66,9 +67,10 @@ void gimbal_task(void const * argument)
 	}
 	osDelay(1000);									//等待陀螺仪零飘数据收集完毕
 	
-	//Gimbal_Position_Reset(&gimbal_control);
+	Gimbal_Position_Reset(&gimbal_control);
 	
 	waitetime = xTaskGetTickCount();
+
 	
 	for (;;)
 	{
@@ -83,9 +85,9 @@ void gimbal_task(void const * argument)
 		while(t<point_all)
 		{
 			
-			y =	arm_sin_f32(x);
-			if (arm_sin_f32(x)>0) y=0.5;
-			if (arm_sin_f32(x)<0) y=-0.5;
+			y =	arm_sin_f32(x)*2;
+			if (arm_sin_f32(x)>0) y=2;
+			if (arm_sin_f32(x)<0) y=-2;
 			if (i==0 ) y=0;
 			x += once_lenth;
 			t++;
@@ -96,6 +98,7 @@ void gimbal_task(void const * argument)
 		
 		Gimbal_PID(&gimbal_control);
 	
+		
 		
 		gimbal_pitch_out_filter.raw_value = gimbal_control.pitch_motor.speed_pid.out;
 		gimbal_yaw_out_filter.raw_value = gimbal_control.yaw_motor.speed_pid.out;//y * 3000;
@@ -149,25 +152,36 @@ static void Gimbal_Init(Gimbal_Control_t *gimbal_init)
 
 //电机位置重新设置，每次云台上电之前执行一次
 //
-static void Gimbal_Position_Init(Gimbal_Control_t *gimbal_pos_reset)
+static void Gimbal_Position_Reset(Gimbal_Control_t *gimbal_pos_reset)
 {
 	uint32_t waitetime;
 	
 	waitetime = xTaskGetTickCount();
+	
+	gimbal_pos_reset->pitch_motor.offset_AbToRe = 0;		//将转换offset置0
+	gimbal_pos_reset->yaw_motor.offset_AbToRe = 0;
+	
 	while(int_abs( (gimbal_pos_reset->pitch_motor.gimbal_motor_measure->ecd
-					-gimbal_pos_reset->pitch_motor.offset_ecd) ) > 500 )					//pitch电机没有抬到水平位置时执行
+					-gimbal_pos_reset->pitch_motor.offset_ecd) ) > 50 )					//pitch电机没有抬到水平位置时执行
 	{
+		//仿照主任务，让云台抬升到水平位置
 		Gimbal_Feedback_Update(gimbal_pos_reset);
 		Gimbal_Set_Contorl(&gimbal_control);
-		Gimbal_PID(&gimbal_control);
-		
+									//留给模式设置的地方
+		Gimbal_PID(&gimbal_control);//这里要注意用电机角度，注意模式设置
+		gimbal_pitch_out_filter.raw_value = gimbal_control.pitch_motor.speed_pid.out;
+		Chebyshev100HzLPF(&gimbal_pitch_out_filter);
 		CAN_CMD_Gimbal(gimbal_pitch_out_filter.filtered_value, 0);
 		
 		osDelayUntil(&waitetime, GIMBAL_TASK_CONTROL_TIME);
 	}
 	
+	//pitch到达水平位置后，重置陀螺仪测量的yaw和pitch角，设置转换offset
+	gimbal_pos_reset->pitch_motor.offset_AbToRe = gimbal_pos_reset->pitch_motor.absolute_angle
+													-gimbal_pos_reset->pitch_motor.relative_angle;
 	
-	
+	gimbal_pos_reset->yaw_motor.offset_AbToRe = gimbal_pos_reset->yaw_motor.absolute_angle
+													-gimbal_pos_reset->yaw_motor.relative_angle;
 }
 
 static void Gimbal_Feedback_Update(Gimbal_Control_t *gimbal_feedback)
@@ -177,16 +191,29 @@ static void Gimbal_Feedback_Update(Gimbal_Control_t *gimbal_feedback)
         return;
     }
 	//云台角速度数据更新
-	gimbal_feedback->pitch_motor.gyro = *(gimbal_feedback->gimbal_INT_gyro_point  + INS_GYRO_X_ADDRESS_OFFSET);
-	gimbal_feedback->yaw_motor.gyro = *(gimbal_feedback->gimbal_INT_gyro_point  + INS_GYRO_Z_ADDRESS_OFFSET);
+	gimbal_feedback->pitch_motor.gyro = *(gimbal_feedback->gimbal_INT_gyro_point + INS_GYRO_X_ADDRESS_OFFSET);
+	gimbal_feedback->yaw_motor.gyro = *(gimbal_feedback->gimbal_INT_gyro_point + INS_GYRO_Z_ADDRESS_OFFSET);
 	//陀螺仪角度数据更新
 	gimbal_feedback->pitch_motor.absolute_angle = *(gimbal_feedback->gimbal_INT_angle_point + INS_PITCH_ADDRESS_OFFSET);
+	gimbal_feedback->pitch_motor.absolute_angle = Motor_Absolute_to_Relative_Change(gimbal_feedback->pitch_motor.absolute_angle ,
+																					gimbal_feedback->pitch_motor.offset_AbToRe);
 	gimbal_feedback->yaw_motor.absolute_angle = *(gimbal_feedback->gimbal_INT_angle_point + INS_YAW_ADDRESS_OFFSET);
+	gimbal_feedback->yaw_motor.absolute_angle = Motor_Absolute_to_Relative_Change(gimbal_feedback->yaw_motor.absolute_angle ,
+																					gimbal_feedback->yaw_motor.offset_AbToRe);
 	//云台角度数据更新
 	gimbal_feedback->pitch_motor.relative_angle = Motor_ecd_to_angle_Change(gimbal_feedback->pitch_motor.gimbal_motor_measure->ecd,
 																			gimbal_feedback->pitch_motor.offset_ecd);
 	gimbal_feedback->yaw_motor.relative_angle = Motor_ecd_to_angle_Change(gimbal_feedback->yaw_motor.gimbal_motor_measure->ecd,
 																		  gimbal_feedback->yaw_motor.offset_ecd);
+}
+
+//将绝对角度和相对角度整合
+static float Motor_Absolute_to_Relative_Change(float angle,float offset)
+{
+	angle -= offset;
+	if (angle>PI) angle -= 2*PI;
+	if (angle<-PI) angle += 2*PI;
+	return angle;
 }
 
 
@@ -214,7 +241,7 @@ static float Motor_ecd_to_angle_Change(uint16_t ecd, uint16_t offset_ecd)
 static void Gimbal_Set_Contorl(Gimbal_Control_t *gimbal_set_control)
 {
 	gimbal_set_control->pitch_motor.relative_angle_set = 0;
-	
+	gimbal_set_control->yaw_motor.relative_angle_set = 0;
 	
 }
 
@@ -234,12 +261,12 @@ static void Gimbal_PID(Gimbal_Control_t *gimbal_pid)
 	Gimbal_AnglePID_Calculate(&gimbal_pid->yaw_motor.angle_pid , 0, 
 	gimbal_pid->yaw_motor.relative_angle_set, gimbal_pid->yaw_motor.gyro);
 #else	
-	gimbal_pid->yaw_motor.relative_angle_set = 0-gimbal_pid->yaw_motor.relative_angle;;
-	Gimbal_AnglePID_Calculate(&gimbal_pid->yaw_motor.angle_pid , gimbal_pid->yaw_motor.relative_angle, 
+	gimbal_pid->yaw_motor.relative_angle_set = gimbal_pid->yaw_motor.relative_angle_set-gimbal_pid->yaw_motor.absolute_angle;//(float)(gimbal_control.gimbal_rc_ctrl->rc.ch[1])/500.
+	Gimbal_AnglePID_Calculate(&gimbal_pid->yaw_motor.angle_pid , 0, 
 	gimbal_pid->yaw_motor.relative_angle_set, gimbal_pid->yaw_motor.gyro);
 #endif
 	
-	corrector_yaw_speed.raw_value = gimbal_pid->yaw_motor.angle_pid.out-gimbal_pid->yaw_motor.gyro;//2*y-gimbal_pid->yaw_motor.gyro;//
+	corrector_yaw_speed.raw_value = gimbal_pid->yaw_motor.angle_pid.out-gimbal_pid->yaw_motor.gyro;//-gimbal_pid->yaw_motor.gyro;//
 	Corrector_Yaw_Speed(&corrector_yaw_speed);
 	gimbal_pid->yaw_motor.gyro_set = corrector_yaw_speed.filtered_value;
 	PID_Calculate(&gimbal_pid->yaw_motor.speed_pid, 0, gimbal_pid->yaw_motor.gyro_set);
@@ -281,20 +308,21 @@ static float Gimbal_AnglePID_Calculate(PID_Regulator_t *pid , float fdb, float s
 }
 
 
-
 #if JSCOPE_WATCH_gimbal
-float jlook_p_gyro,jlook_y_gyro;
-float jlook_p_angle,jlook_y_angle;
-float jlook_y_pout;
-float jlook_c,jlook_rc;
+float jlook_y_gyro;
+float jlook_y_angle,jlook_p_angle;
+float jlook_y_gyangle,jlook_p_gyangle;
+float jlook_rc;
+float time;
 static void Jscope_Watch_gimbal(void)
 {
-	jlook_p_gyro = gimbal_control.pitch_motor.gyro;
 	jlook_y_gyro = gimbal_control.yaw_motor.gyro*100;
-    jlook_p_angle = gimbal_control.pitch_motor.absolute_angle;
 	jlook_y_angle = gimbal_control.yaw_motor.relative_angle;
-	jlook_y_pout = gimbal_control.yaw_motor.angle_pid.out*10;
-	jlook_c = corrector_yaw_speed.filtered_value;
+	jlook_y_gyangle = gimbal_control.yaw_motor.absolute_angle;
+	jlook_p_angle = gimbal_control.pitch_motor.relative_angle;
+	jlook_p_gyangle = gimbal_control.pitch_motor.absolute_angle;
 	jlook_rc = gimbal_control.gimbal_rc_ctrl->rc.ch[1];
+	time++;
+	if (time>=10000) time =0;
 }
 #endif

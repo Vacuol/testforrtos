@@ -51,3 +51,5 @@ testforrtos\stm32f4xx_it.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/e
 testforrtos\stm32f4xx_it.o: ..\user\APP\remote_control\remote.h
 testforrtos\stm32f4xx_it.o: ..\user\APP\can_receive\can_receive.h
 testforrtos\stm32f4xx_it.o: ../Inc/can.h
+testforrtos\stm32f4xx_it.o: ..\user\APP\auto_aim\auto_aim_task.h
+testforrtos\stm32f4xx_it.o: ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.h
