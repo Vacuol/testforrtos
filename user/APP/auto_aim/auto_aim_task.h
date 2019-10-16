@@ -12,9 +12,12 @@ typedef struct
 {
 	uint16_t initial;
 	uint16_t relative;
-	float angle;
-	float speed[2];
+	float angle[2];
+	float gyro[2];
+	float speed;
 	float accl;
+	float filted_angle;
+	float filted_speed;
 	
 } Target_t;
 

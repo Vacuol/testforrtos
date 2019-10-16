@@ -4,13 +4,13 @@
     <Project>
         <Configuration>
             <JLink>
-                <Options Connection="1" IsRTTSession="0" IsRTTWithTimeStamp="1" SamplingPeriod="100" SerialNo="0" JTAG_IRPre="0" JTAG_DRPre="0" IP="" TargetDevice="Cortex-M4" TargetInterface="SWD" InterfaceSpeed="4000" />
+                <Options Connection="1" IsRTTSession="0" IsRTTWithTimeStamp="1" SamplingPeriod="100" SerialNo="0" JTAG_IRPre="0" JTAG_DRPre="0" IP="localhost" TargetDevice="Cortex-M4" TargetInterface="SWD" InterfaceSpeed="4000" />
             </JLink>
             <ElfFile Name="D:\GitHub\testforrtos\MDK-ARM\testforrtos\testforrtos.axf" />
             <DataFile Name="" />
             <RawFile Name="..\s&apos;w&apos;de&apos;x&apos;r.csv" />
             <Scope>
-                <Options TimeResolutionUs="2000000" />
+                <Options TimeResolutionUs="200000" />
             </Scope>
         </Configuration>
         <Windows>
@@ -19,19 +19,16 @@
         </Windows>
         <SelectedSymbols>
             <Symbol>
-                <Options Name="jlook_y_pout" Address="0x20000254" Type="float" TypeID="1" Size="4" GraphColorRed="0" GraphColorGreen="191" GraphColorBlue="255" YMinSampled="0" YMaxSampled="0" YAvgSampled="0" Offset="4" ShowInGraph="1" ACCoupling="0" YOffset="300" IsAutoConfig="0" YResolution="50" MaxValue="-2147483648" File="..\user\APP\gimbal_task\gimbal_task.c" Scope="0" DrawStyle="0" />
+                <Options Name="jlook_angle" Address="0x20000324" Type="float" TypeID="1" Size="4" GraphColorRed="255" GraphColorGreen="215" GraphColorBlue="0" YMinSampled="-2147483648" YMaxSampled="-2147483648" YAvgSampled="-2147483648" Offset="4" ShowInGraph="1" ACCoupling="0" YOffset="300" IsAutoConfig="0" YResolution="1" MaxValue="10" File="..\user\APP\auto_aim\auto_aim_task.c" Scope="0" DrawStyle="0" />
             </Symbol>
             <Symbol>
-                <Options Name="jlook_y_angle" Address="0x2000013C" Type="float" TypeID="1" Size="4" GraphColorRed="255" GraphColorGreen="0" GraphColorBlue="0" YMinSampled="0" YMaxSampled="1" YAvgSampled="0" Offset="8" ShowInGraph="1" ACCoupling="0" YOffset="400" IsAutoConfig="0" YResolution="2" MaxValue="-2147483648" File="..\user\APP\gimbal_task\gimbal_task.c" Scope="0" DrawStyle="0" />
+                <Options Name="jlook_rawvlue" Address="0x20000320" Type="float" TypeID="1" Size="4" GraphColorRed="0" GraphColorGreen="255" GraphColorBlue="0" YMinSampled="-2147483648" YMaxSampled="-2147483648" YAvgSampled="-2147483648" Offset="8" ShowInGraph="1" ACCoupling="0" YOffset="300" IsAutoConfig="0" YResolution="1" MaxValue="-2147483648" File="..\user\APP\auto_aim\auto_aim_task.c" Scope="0" DrawStyle="0" />
             </Symbol>
             <Symbol>
-                <Options Name="jlook_p_angle" Address="0x20000140" Type="float" TypeID="1" Size="4" GraphColorRed="102" GraphColorGreen="102" GraphColorBlue="178" YMinSampled="0" YMaxSampled="0" YAvgSampled="0" Offset="12" ShowInGraph="1" ACCoupling="0" YOffset="200" IsAutoConfig="0" YResolution="1" MaxValue="-2147483648" File="..\user\APP\gimbal_task\gimbal_task.c" Scope="0" DrawStyle="0" />
+                <Options Name="jlook_speed" Address="0x20000328" Type="float" TypeID="1" Size="4" GraphColorRed="102" GraphColorGreen="102" GraphColorBlue="178" YMinSampled="-2147483648" YMaxSampled="-2147483648" YAvgSampled="-2147483648" Offset="12" ShowInGraph="1" ACCoupling="0" YOffset="300" IsAutoConfig="0" YResolution="5" MaxValue="-2147483648" File="..\user\APP\auto_aim\auto_aim_task.c" Scope="0" DrawStyle="0" />
             </Symbol>
             <Symbol>
-                <Options Name="jlook_p_gyangle" Address="0x20000148" Type="float" TypeID="1" Size="4" GraphColorRed="160" GraphColorGreen="32" GraphColorBlue="240" YMinSampled="0" YMaxSampled="0" YAvgSampled="0" Offset="16" ShowInGraph="1" ACCoupling="0" YOffset="200" IsAutoConfig="0" YResolution="1" MaxValue="-2147483648" File="..\user\APP\gimbal_task\gimbal_task.c" Scope="0" DrawStyle="0" />
-            </Symbol>
-            <Symbol>
-                <Options Name="jlook_y_gyangle" Address="0x20000144" Type="float" TypeID="1" Size="4" GraphColorRed="255" GraphColorGreen="0" GraphColorBlue="0" YMinSampled="0" YMaxSampled="0" YAvgSampled="0" Offset="20" ShowInGraph="1" ACCoupling="0" YOffset="400" IsAutoConfig="0" YResolution="2" MaxValue="16" File="..\user\APP\gimbal_task\gimbal_task.c" Scope="0" DrawStyle="0" />
+                <Options Name="jlook_p" Address="0x2000032C" Type="float" TypeID="1" Size="4" GraphColorRed="160" GraphColorGreen="32" GraphColorBlue="240" YMinSampled="-2147483648" YMaxSampled="-2147483648" YAvgSampled="-2147483648" Offset="16" ShowInGraph="1" ACCoupling="0" YOffset="300" IsAutoConfig="0" YResolution="100" MaxValue="-2147483648" File="..\user\APP\auto_aim\auto_aim_task.c" Scope="0" DrawStyle="0" />
             </Symbol>
         </SelectedSymbols>
     </Project>

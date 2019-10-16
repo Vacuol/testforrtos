@@ -17,7 +17,7 @@
     }
 
 
-#define JSCOPE_WATCH_gimbal 1
+#define JSCOPE_WATCH_gimbal 0
 #if JSCOPE_WATCH_gimbal
 //j-scope °ïÖúpidµ÷²Î
 static void Jscope_Watch_gimbal(void);

@@ -42,7 +42,7 @@ void kalman_filter_init(kalman_filter_t *F, kalman_filter_init_t *I)
 	mat_trans(&F->A, &F->AT);
 }
 
-float *kalman_filter_calc(kalman_filter_t *F, float z_signal1, float z_signal2, float u_signal1, float u_signal2)
+void kalman_filter_calc(kalman_filter_t *F, float z_signal1, float z_signal2, float u_signal1, float u_signal2)
 {
 	float TEMP_data[4] = {0, 0, 0, 0};
 	float TEMP_data21[2] = {0, 0};
@@ -91,5 +91,4 @@ float *kalman_filter_calc(kalman_filter_t *F, float z_signal1, float z_signal2, 
 	F->filtered_value[0] = F->xhat.pData[0];
 	F->filtered_value[1] = F->xhat.pData[1];
 
-	return F->filtered_value;
 }
