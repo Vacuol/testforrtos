@@ -54,9 +54,7 @@ void Chassis_Init(Chassis_Control_t *chassis_init)
 		chassis_init->chassis_motor[i].chassis_motor_measure = get_Chassis_Motor_Measure_Point(i);
 		PID_Init(&chassis_init->chassis_motor[i].speed_pid, CHASSIS_PID_MODE,CHASSIS_PID_MAX_OUT,CHASSIS_PID_MAX_IOUT,CHASSIS_PID_KP,CHASSIS_PID_KI,CHASSIS_PID_KD);
 	}
-		
-		
-		
+
 }
 
 static void Chassis_Feedback_Update(Chassis_Control_t *chassis_feedback)

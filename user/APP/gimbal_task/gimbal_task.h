@@ -9,11 +9,12 @@
 #include "remote.h"
 #include "Sensor_task.h"
 #include "pid.h"
+#include "auto_aim_task.h"
 
 //gimbaltask控制周期
 #define GIMBAL_TASK_CONTROL_TIME 1
 //云台电机初始值（中值）电机重新安装之后，需要重新设定此参数
-#define PITCH_OFFSET_ECD 800
+#define PITCH_OFFSET_ECD 650
 #define YAW_OFFSET_ECD 600
 
 //云台电机一周期及其一半
@@ -50,7 +51,7 @@
 #ifdef YAE_ANGLE_PID_MODE_POSITION
 #define YAW_ANGLE_PID_MODE PID_POSITION
 #define YAW_ANGLE_PID_MAX_OUT 12.0f
-#define YAW_ANGLE_PID_MAX_IOUT 4.0f
+#define YAW_ANGLE_PID_MAX_IOUT 1.0f
 
 #define YAW_ANGLE_PID_KP 35.0f
 #define YAW_ANGLE_PID_KI 2.0f
@@ -97,6 +98,7 @@ typedef struct
 	PID_Regulator_t speed_pid;
 	PID_Regulator_t angle_pid;
 	uint16_t offset_ecd;
+	const Target_t *target;
 	
 } Gimbal_Motor_t;
 

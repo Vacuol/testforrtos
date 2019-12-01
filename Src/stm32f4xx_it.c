@@ -175,7 +175,7 @@ void DMA1_Stream6_IRQHandler(void)
   /* USER CODE END DMA1_Stream6_IRQn 0 */
   HAL_DMA_IRQHandler(&hdma_uart8_rx);
   /* USER CODE BEGIN DMA1_Stream6_IRQn 1 */
-
+Getdata_Camera();
   /* USER CODE END DMA1_Stream6_IRQn 1 */
 }
 

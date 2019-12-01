@@ -3,9 +3,9 @@
 
 
 /* ----------------------- RC Switch Definition----------------------------- */
-#define RC_SW_UP ((uint16_t)1)
-#define RC_SW_MID ((uint16_t)3)
-#define RC_SW_DOWN ((uint16_t)2)
+#define RC_UP ((uint8_t)1)
+#define RC_MID ((uint8_t)3)
+#define RC_DOWN ((uint8_t)2)
 
 #include "main.h"
 

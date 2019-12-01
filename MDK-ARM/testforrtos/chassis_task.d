@@ -61,3 +61,5 @@ testforrtos\chassis_task.o: ..\user\mpu6500\ist8310.h
 testforrtos\chassis_task.o: ..\user\mpu6500\mpu6500.h
 testforrtos\chassis_task.o: ..\user\APP\pid\pid.h
 testforrtos\chassis_task.o: D:\soft\keil5\ARM\ARMCC\Bin\..\include\math.h
+testforrtos\chassis_task.o: ..\user\APP\auto_aim\auto_aim_task.h
+testforrtos\chassis_task.o: ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.h

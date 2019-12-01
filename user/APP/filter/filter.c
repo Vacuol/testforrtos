@@ -79,7 +79,7 @@ void Corrector_Yaw_Speed(Filter_t *F)
 	{
 		F->ybuf[0] = F->ybuf[0] + NUM_y_speed[i] * F->xbuf[i] - DEN_y_speed[i] * F->ybuf[i];
 	}
-	LimitMax(F->ybuf[0],10);
+	LimitMax(F->ybuf[0],6);
 	F->filtered_value = F->ybuf[0];
 }
 

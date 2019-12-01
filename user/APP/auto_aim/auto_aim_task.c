@@ -1,9 +1,14 @@
 #include "auto_aim_task.h"
 #include "Sensor_task.h"
 #include "kalman_filter.h"
+#include "usart.h"
 #include <stdlib.h>
+//#include "math.h"
 
-#define AURO_AIM_CONTROL_TIME 2
+#define int_abs(x) ((x) > 0 ? (x) : (-x))
+
+//卡尔曼的运算周期，单位ms
+#define AURO_AIM_CONTROL_TIME 1
 
 #define JSCOPE_WATCH_aim 1
 #if JSCOPE_WATCH_aim
@@ -11,7 +16,7 @@
 static void Jscope_Watch_gimbal(void);
 #endif
 
-#define INTERNALTEST 1
+#define INTERNALTEST 0
 #if INTERNALTEST
 uint16_t point_all,t;
 float once_lenth,x,y,p;
@@ -30,12 +35,13 @@ float fs[]={
 static void Aim_Init(Aim_t *aim_init, kalman_filter_init_t *I);
 static void Aim_Feedback_Update(Aim_t *aim);
 static float Aim_Position_to_Angle(int16_t Pos);
-
-uint8_t TX2_data[9];
+static void Getdata_Internal(Aim_t *aim);
 
 static kalman_filter_t F_aim;
 static kalman_filter_init_t I;
 static Aim_t aim;
+
+uint8_t TX2_data[1];
 
 void auto_aim_task(void const * argument)
 {
@@ -88,6 +94,15 @@ void auto_aim_task(void const * argument)
 #endif 
 }
 
+const Target_t *get_x_autoaim_point(void)
+{
+	return &aim.x;
+}
+
+const Target_t *get_y_autoaim_point(void)
+{
+	return &aim.y;
+}
 
 static void Aim_Init(Aim_t *aim_init, kalman_filter_init_t *I)
 {
@@ -104,14 +119,15 @@ static void Aim_Init(Aim_t *aim_init, kalman_filter_init_t *I)
 	I->B_data[0] = aim_init->Ts/2; I->B_data[1] = 0;
 	I->B_data[2] = 0; I->B_data[2] = 1;
 	
-	I->Q_data[0] = 0.0001; I->Q_data[1] = 0;
-	I->Q_data[2] = 0; I->Q_data[3] = 0.0001;
+	I->Q_data[0] = 0.001; I->Q_data[1] = 0;
+	I->Q_data[2] = 0; I->Q_data[3] = 0.001;
 	
 	I->R_data[0] = 0.001; I->R_data[1] = 0;
 	I->R_data[2] = 0; I->R_data[3] = 0.001;
 	
 	I->H_data[0] = 1; I->H_data[1] = 0; 
 	I->H_data[2] = 0; I->H_data[3] = 1;
+	HAL_UART_Receive_DMA(&huart8,TX2_data,sizeof(TX2_data));
 }
 
 static void Aim_Feedback_Update(Aim_t *aim_feedback)
@@ -121,16 +137,24 @@ static void Aim_Feedback_Update(Aim_t *aim_feedback)
 	aim_feedback->y.gyro[1] = aim_feedback->y.gyro[0];
 	//角速度更新
 	aim_feedback->x.gyro[0] = *(aim_feedback->gimbal_gyro_point + INS_GYRO_Z_ADDRESS_OFFSET);
-	aim_feedback->y.gyro[0] = *(aim_feedback->gimbal_gyro_point +INS_GYRO_X_ADDRESS_OFFSET);
+	aim_feedback->y.gyro[0] = -*(aim_feedback->gimbal_gyro_point +INS_GYRO_X_ADDRESS_OFFSET);
 	//算出速度增量
 	aim_feedback->x.accl = aim_feedback->x.gyro[0] - aim_feedback->x.gyro[1];
 	aim_feedback->y.accl = aim_feedback->y.gyro[0] - aim_feedback->y.gyro[1];
 	//获取TX2数据
-	aim_feedback->x.initial=(aim_feedback->TX2data[2]<<8) || (aim_feedback->TX2data[3]);
-	aim_feedback->y.initial=(aim_feedback->TX2data[5]<<8) || (aim_feedback->TX2data[6]);
+	Getdata_Internal(aim_feedback);
 	//获取相对中心的坐标
-	aim_feedback->x.relative = aim_feedback->x.initial - 720;
-	aim_feedback->y.relative = aim_feedback->y.initial - 540;
+	if (aim_feedback->x.initial == 0 && aim_feedback->y.initial == 0)
+	{
+		aim_feedback->x.relative = 0;
+		aim_feedback->y.relative = 0;
+	}
+	else 
+	{
+		aim_feedback->x.relative = aim_feedback->x.initial - 720;
+		aim_feedback->y.relative = aim_feedback->y.initial - 540;
+
+	}
 	//将非线性位置数据转为角度，变成线性数据
 	aim_feedback->x.angle[1] = aim_feedback->x.angle[0]; 
 	aim_feedback->y.angle[1] = aim_feedback->y.angle[0];
@@ -141,39 +165,97 @@ static void Aim_Feedback_Update(Aim_t *aim_feedback)
 #endif
 	aim_feedback->x.speed = (aim_feedback->x.angle[0] - aim_feedback->x.angle[1])/aim_feedback->Ts;
 	aim_feedback->y.speed = (aim_feedback->x.angle[0] - aim_feedback->x.angle[1])/aim_feedback->Ts;
-
 }
 
-static float Aim_Position_to_Angle(int16_t Pos)
+static float Aim_Position_to_Angle(int16_t pos)
 {
 	float angle;
+	if (int_abs(pos) > 300) angle = atan((1.0*pos) /1500);
+	else if (int_abs(pos) > 100) angle = atan((1.0*pos) /1400);
+	else angle = atan((1.0*pos) /1400)*0.01*int_abs(pos)*0.01*int_abs(pos);
 	
 	return angle;
 }
 
+static void Getdata_Internal(Aim_t *aim)
+{
+	uint8_t i,j; 
+}
+
+float jx,jy;
+
 void Getdata_Camera()
 {
-	uint8_t i;
+	switch (aim.TX2.flag_end)
+	{
+		case 0:
+			aim.TX2.check =0;
+			if (TX2_data[0]=='&')
+				aim.TX2.flag_end=1;
+			else 
+				aim.TX2.flag_end=0;
+		break;
+			
+		case 1:
+			if (TX2_data[0]=='%')
+				aim.TX2.flag_end=2;
+			else 
+				aim.TX2.flag_end=0;
+		break;
+			
+		case 2:
+			//aim.TX2.check =  TX2_data[0];
+			aim.x.initial &= 0x00ff;
+			aim.x.initial |= (TX2_data[0]<<8);
+			aim.TX2.flag_end=3;
+		break;
+		
+		case 3:
+			aim.x.initial &= 0xff00;
+			aim.TX2.check += TX2_data[0];
+			aim.x.initial |= TX2_data[0];
+			aim.TX2.flag_end=4;
+		break;
 	
-	for (i=0;i<9;i++) aim.TX2data[i]=TX2_data[i];
+		case 4:
+//			aim.TX2.check += TX2_data[0];
+			aim.y.initial &= 0x00ff;
+			aim.y.initial |= (TX2_data[0]<<8);
+			aim.TX2.flag_end=5;
+		break;
+		
+		case 5:
+			aim.y.initial &= 0xff00;
+			aim.TX2.check += TX2_data[0];
+			aim.y.initial |= TX2_data[0];
+			aim.TX2.flag_end=6;
+		break;
+			
+		case 6:
+			if (aim.TX2.check != TX2_data[0]) 
+			{
+				aim.x.initial = 720;
+				aim.y.initial = 540;
+			}
+			aim.TX2.flag_end=0;
+			jx = aim.x.initial;
+			jy = aim.y.initial;
+		break;
+	}
 	
 }
 
 #if JSCOPE_WATCH_aim
-float jlook_rawvlue,jlook_angle,jlook_speed;
-float jlook_p;
+float jlook_x_filtespeed,jlook_x_filterangle;
+
+
 static void Jscope_Watch_gimbal(void)
 {
-	jlook_rawvlue = y;
-	jlook_p = p;
-	jlook_angle = aim.x.filted_angle;
-	jlook_speed = aim.x.filted_speed;
+
+	jlook_x_filterangle = aim.x.filted_angle;
+	jlook_x_filtespeed = aim.x.filted_speed;
 }
 #endif
-
-
-
-
 
 
 

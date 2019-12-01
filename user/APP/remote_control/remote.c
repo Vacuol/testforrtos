@@ -63,8 +63,8 @@ error:
     rc_ctrl.rc.ch[1] = 0;
     rc_ctrl.rc.ch[2] = 0;
     rc_ctrl.rc.ch[3] = 0;
-    rc_ctrl.rc.sleft = RC_SW_DOWN;
-    rc_ctrl.rc.sright = RC_SW_DOWN;
+    rc_ctrl.rc.sleft = RC_DOWN;
+    rc_ctrl.rc.sright = RC_DOWN;
     rc_ctrl.mouse.x = 0;
     rc_ctrl.mouse.y = 0;
     rc_ctrl.mouse.z = 0;

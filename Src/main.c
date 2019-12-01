@@ -109,7 +109,7 @@ int main(void)
   /* USER CODE BEGIN 2 */
   CAN1_Init();
   HAL_UART_Receive_DMA(&huart1,teledata_rx,sizeof(teledata_rx));
-  HAL_UART_Receive_DMA(&huart8,TX2_data,sizeof(TX2_data));
+  
   /* USER CODE END 2 */
 
   /* Call init function for freertos objects (in freertos.c) */

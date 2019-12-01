@@ -17,7 +17,7 @@
     }
 
 
-#define JSCOPE_WATCH_gimbal 0
+#define JSCOPE_WATCH_gimbal 1
 #if JSCOPE_WATCH_gimbal
 //j-scope 帮助pid调参
 static void Jscope_Watch_gimbal(void);
@@ -37,11 +37,14 @@ float fs[]={
 80, 90, 100, 110, 120, 200, 250, 333};
 
 #endif 
+float point_all,t;
+float once_lenth,x,y;
 
 Gimbal_Control_t gimbal_control;
 Filter_t gimbal_pitch_out_filter;
 Filter_t gimbal_yaw_out_filter;
 Filter_t corrector_yaw_speed,corrector_yaw_position;
+
 
 static void Gimbal_Init(Gimbal_Control_t *gimbal_init);
 static void Gimbal_Position_Reset(Gimbal_Control_t *gimbal_pos_reset);
@@ -51,6 +54,8 @@ static float Motor_ecd_to_angle_Change(uint16_t ecd, uint16_t offset_ecd);
 static void Gimbal_Set_Contorl(Gimbal_Control_t *gimbal_set_control);
 static void Gimbal_PID(Gimbal_Control_t *gimbal_pid);
 static float Gimbal_AnglePID_Calculate(PID_Regulator_t *pid , float fdb, float set, float DELTA);
+
+uint8_t T_aim;
 
 void gimbal_task(void const * argument)
 {
@@ -92,19 +97,25 @@ void gimbal_task(void const * argument)
 			x += once_lenth;
 			t++;
 #endif 
-			
+//		point_all = 20000/3;
+//		once_lenth = 3*2*PI/1000;
+//		t=0;
+//		x=0;
+//		while(t<point_all)
+//		{
+//			y =	arm_sin_f32(x)*0.03;
+//			x += once_lenth;
+//			t++;
 		Gimbal_Feedback_Update(&gimbal_control);
 		Gimbal_Set_Contorl(&gimbal_control);
 		
 		Gimbal_PID(&gimbal_control);
-	
-		
-		
+
 		gimbal_pitch_out_filter.raw_value = gimbal_control.pitch_motor.speed_pid.out;
 		gimbal_yaw_out_filter.raw_value = gimbal_control.yaw_motor.speed_pid.out;//y * 3000;
 		Chebyshev100HzLPF(&gimbal_yaw_out_filter);
 		Chebyshev100HzLPF(&gimbal_pitch_out_filter);
-		CAN_CMD_Gimbal(gimbal_pitch_out_filter.filtered_value, gimbal_control.yaw_motor.speed_pid.out);
+		CAN_CMD_Gimbal(gimbal_pitch_out_filter.filtered_value, gimbal_yaw_out_filter.filtered_value);
 
 		
 #if JSCOPE_WATCH_gimbal		
@@ -116,6 +127,7 @@ void gimbal_task(void const * argument)
 #if SYSTEM_IDENTIFICATION
 }}
 #endif 
+//}//daihuijiushan
 }
 
 const Gimbal_Motor_t *get_yaw_motor_point(void)
@@ -128,7 +140,6 @@ const Gimbal_Motor_t *get_pitch_motor_point(void)
 	return &gimbal_control.pitch_motor;
 }
 
-
 static void Gimbal_Init(Gimbal_Control_t *gimbal_init)
 {
 	//电机数据指针获取
@@ -139,6 +150,9 @@ static void Gimbal_Init(Gimbal_Control_t *gimbal_init)
     gimbal_init->gimbal_INT_gyro_point = get_MPU6500_Gyro_Data_Point();
 	//遥控器数据指针获取
     gimbal_init->gimbal_rc_ctrl = get_remote_control_point();
+	//自瞄数据指针获取
+	gimbal_init->yaw_motor.target = get_x_autoaim_point();
+	gimbal_init->pitch_motor.target = get_y_autoaim_point();
 	//yaw电机PID初始化
 	PID_Init(&gimbal_init->yaw_motor.speed_pid, YAW_SPEED_PID_MODE,YAW_SPEED_PID_MAX_OUT,YAW_SPEED_PID_MAX_IOUT,YAW_SPEED_PID_KP,YAW_SPEED_PID_KI,YAW_SPEED_PID_KD);
 	PID_Init(&gimbal_init->yaw_motor.angle_pid, YAW_ANGLE_PID_MODE,YAW_ANGLE_PID_MAX_OUT,YAW_ANGLE_PID_MAX_IOUT,YAW_ANGLE_PID_KP,YAW_ANGLE_PID_KI,YAW_ANGLE_PID_KD);
@@ -148,10 +162,10 @@ static void Gimbal_Init(Gimbal_Control_t *gimbal_init)
 	//云台电机中值初始化
 	gimbal_init->pitch_motor.offset_ecd = PITCH_OFFSET_ECD;
 	gimbal_init->yaw_motor.offset_ecd = YAW_OFFSET_ECD;
+
 }
 
 //电机位置重新设置，每次云台上电之前执行一次
-//
 static void Gimbal_Position_Reset(Gimbal_Control_t *gimbal_pos_reset)
 {
 	uint32_t waitetime;
@@ -205,6 +219,7 @@ static void Gimbal_Feedback_Update(Gimbal_Control_t *gimbal_feedback)
 																			gimbal_feedback->pitch_motor.offset_ecd);
 	gimbal_feedback->yaw_motor.relative_angle = Motor_ecd_to_angle_Change(gimbal_feedback->yaw_motor.gimbal_motor_measure->ecd,
 																		  gimbal_feedback->yaw_motor.offset_ecd);
+
 }
 
 //将绝对角度和相对角度整合
@@ -240,36 +255,58 @@ static float Motor_ecd_to_angle_Change(uint16_t ecd, uint16_t offset_ecd)
 
 static void Gimbal_Set_Contorl(Gimbal_Control_t *gimbal_set_control)
 {
-	gimbal_set_control->pitch_motor.relative_angle_set = 0;
-	gimbal_set_control->yaw_motor.relative_angle_set = 0;
+	
+	//右上开关拨到中间，回到中间
+	if (gimbal_set_control->gimbal_rc_ctrl->rc.sleft == 0)
+	{
+		gimbal_set_control->pitch_motor.relative_angle_set = 0;
+		gimbal_set_control->yaw_motor.relative_angle_set = 2;
+	}
+
+	T_aim++;
+	if (T_aim==8)
+	{
+		T_aim=0;
+		//右上开关拨上，开启自瞄
+		if (gimbal_set_control->gimbal_rc_ctrl->rc.sleft == RC_UP)
+		{
+			gimbal_set_control->pitch_motor.relative_angle_set = 0;
+			gimbal_set_control->yaw_motor.relative_angle_set = gimbal_set_control->yaw_motor.relative_angle - gimbal_set_control->yaw_motor.target->filted_angle;
+		}
+	}
+	
+	//右上开关拨到中间，回到中间
+	if (gimbal_set_control->gimbal_rc_ctrl->rc.sleft == RC_MID)
+	{
+		gimbal_set_control->pitch_motor.relative_angle_set = 0;
+		gimbal_set_control->yaw_motor.relative_angle_set =  gimbal_set_control->gimbal_rc_ctrl->rc.ch[0]*1.0/500;
+	}
+	
 	
 }
 
 static void Gimbal_PID(Gimbal_Control_t *gimbal_pid)
 {
 	//pitch 
-	Gimbal_AnglePID_Calculate(&gimbal_pid->pitch_motor.angle_pid , gimbal_pid->pitch_motor.relative_angle, 
+	Gimbal_AnglePID_Calculate(&gimbal_pid->pitch_motor.angle_pid , gimbal_pid->pitch_motor.relative_angle,
 		gimbal_pid->pitch_motor.relative_angle_set, gimbal_pid->pitch_motor.gyro);
 	
 	gimbal_pid->pitch_motor.gyro_set = gimbal_pid->pitch_motor.angle_pid.out;
 	PID_Calculate(&gimbal_pid->pitch_motor.speed_pid, gimbal_pid->pitch_motor.gyro, gimbal_pid->pitch_motor.gyro_set);
 	
 	//yaw 
-	
 #if SYSTEM_IDENTIFICATION
 	gimbal_pid->yaw_motor.relative_angle_set = 0-gimbal_pid->yaw_motor.relative_angle;//(float)(gimbal_control.gimbal_rc_ctrl->rc.ch[1])/500.
 	Gimbal_AnglePID_Calculate(&gimbal_pid->yaw_motor.angle_pid , 0, 
 	gimbal_pid->yaw_motor.relative_angle_set, gimbal_pid->yaw_motor.gyro);
 #else	
-	gimbal_pid->yaw_motor.relative_angle_set = gimbal_pid->yaw_motor.relative_angle_set-gimbal_pid->yaw_motor.absolute_angle;//(float)(gimbal_control.gimbal_rc_ctrl->rc.ch[1])/500.
-	Gimbal_AnglePID_Calculate(&gimbal_pid->yaw_motor.angle_pid , 0, 
+	Gimbal_AnglePID_Calculate(&gimbal_pid->yaw_motor.angle_pid , gimbal_pid->yaw_motor.relative_angle, 
 	gimbal_pid->yaw_motor.relative_angle_set, gimbal_pid->yaw_motor.gyro);
 #endif
-	
-	corrector_yaw_speed.raw_value = gimbal_pid->yaw_motor.angle_pid.out-gimbal_pid->yaw_motor.gyro;//-gimbal_pid->yaw_motor.gyro;//
+	corrector_yaw_speed.raw_value = gimbal_pid->yaw_motor.angle_pid.out - gimbal_pid->yaw_motor.gyro;//-gimbal_pid->yaw_motor.gyro;//
 	Corrector_Yaw_Speed(&corrector_yaw_speed);
-	gimbal_pid->yaw_motor.gyro_set = corrector_yaw_speed.filtered_value;
-	PID_Calculate(&gimbal_pid->yaw_motor.speed_pid, 0, gimbal_pid->yaw_motor.gyro_set);
+	gimbal_pid->yaw_motor.gyro_set = -corrector_yaw_speed.filtered_value;
+	PID_Calculate(&gimbal_pid->yaw_motor.speed_pid, gimbal_pid->yaw_motor.gyro_set, 0);
 }
 
 static float Gimbal_AnglePID_Calculate(PID_Regulator_t *pid , float fdb, float set, float DELTA)
@@ -307,22 +344,15 @@ static float Gimbal_AnglePID_Calculate(PID_Regulator_t *pid , float fdb, float s
 	
 }
 
-
 #if JSCOPE_WATCH_gimbal
-float jlook_y_gyro;
-float jlook_y_angle,jlook_p_angle;
-float jlook_y_gyangle,jlook_p_gyangle;
-float jlook_rc;
-float time;
+float jlook_taget;
+float jlook_remote;
+float jlook_1,jlook_2,jlook_3;
 static void Jscope_Watch_gimbal(void)
 {
-	jlook_y_gyro = gimbal_control.yaw_motor.gyro*100;
-	jlook_y_angle = gimbal_control.yaw_motor.relative_angle;
-	jlook_y_gyangle = gimbal_control.yaw_motor.absolute_angle;
-	jlook_p_angle = gimbal_control.pitch_motor.relative_angle;
-	jlook_p_gyangle = gimbal_control.pitch_motor.absolute_angle;
-	jlook_rc = gimbal_control.gimbal_rc_ctrl->rc.ch[1];
-	time++;
-	if (time>=10000) time =0;
+	jlook_taget = gimbal_control.yaw_motor.target->filted_angle *100;
+	jlook_remote = gimbal_control.gimbal_rc_ctrl->rc.sright;
+	jlook_1 = gimbal_control.yaw_motor.relative_angle*1000;
+	jlook_2 = gimbal_control.yaw_motor.relative_angle_set*100;
 }
 #endif
