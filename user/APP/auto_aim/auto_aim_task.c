@@ -39,7 +39,7 @@ static void Getdata_Internal(Aim_t *aim);
 
 static kalman_filter_t F_aim;
 static kalman_filter_init_t I;
-static Aim_t aim;
+Aim_t aim;
 
 uint8_t TX2_data[1];
 
@@ -78,7 +78,10 @@ void auto_aim_task(void const * argument)
 		Aim_Feedback_Update(&aim);
 		
 		kalman_filter_calc(&F_aim, aim.x.angle[0],aim.x.speed,aim.x.accl,aim.x.accl);
-		aim.x.filted_angle = F_aim.filtered_value[0];
+		if ( (F_aim.filtered_value[0] * F_aim.filtered_value[1] >0) && (int_abs(aim.x.relative) >100) )
+			aim.x.filted_angle = F_aim.filtered_value[0] + F_aim.filtered_value[1]*AURO_AIM_CONTROL_TIME*0.03;
+		else aim.x.filted_angle = F_aim.filtered_value[0];
+//		aim.x.filted_angle = F_aim.filtered_value[0];
 		aim.x.filted_speed = F_aim.filtered_value[1];
 		
 #if JSCOPE_WATCH_aim		
@@ -238,8 +241,6 @@ void Getdata_Camera()
 				aim.y.initial = 540;
 			}
 			aim.TX2.flag_end=0;
-			jx = aim.x.initial;
-			jy = aim.y.initial;
 		break;
 	}
 	

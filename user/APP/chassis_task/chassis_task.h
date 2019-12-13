@@ -13,11 +13,11 @@
 #include "pid.h"
 
 //
-#define CHASSIS_PID_MODE 0
-#define CHASSIS_PID_MAX_OUT 0
-#define CHASSIS_PID_MAX_IOUT 0
-#define CHASSIS_PID_KP 0
-#define CHASSIS_PID_KI 0
+#define CHASSIS_PID_MODE PID_POSITION
+#define CHASSIS_PID_MAX_OUT 3000
+#define CHASSIS_PID_MAX_IOUT 500
+#define CHASSIS_PID_KP 4
+#define CHASSIS_PID_KI 1
 #define CHASSIS_PID_KD 0
 
 typedef struct
@@ -33,14 +33,25 @@ typedef struct
 
 typedef struct
 {
-	const Gimbal_Motor_t *chassis_yaw_motor;
-	const Gimbal_Motor_t *chassis_pitch_motor;
-	const RC_ctrl_t *chassis_RC;               //底盘使用的遥控器指针
+	float M_global_local[4];
+	int16_t global_front;
+	int16_t global_left;
+	float local_front;
+	float local_left;
+	int16_t rotate;
 	
+} Dirction;
+
+typedef struct
+{
+	const Gimbal_Motor_t *chassis_yaw_motor;	
+	const Gimbal_Motor_t *chassis_pitch_motor;
+	const RC_ctrl_t *chassis_RC;                //底盘使用的遥控器指针
 	Chassis_Motor_t chassis_motor[4];
+	
+	Dirction dir;
 	
 }Chassis_Control_t;
 
 extern void chassis_task(void const * argument);
-
 #endif

@@ -9,6 +9,7 @@
 #include "remote.h"
 #include "Sensor_task.h"
 #include "pid.h"
+
 #include "auto_aim_task.h"
 
 //gimbaltask控制周期
@@ -37,11 +38,16 @@
 
 #elif YAE_SPEED_PID_MODE_POSITION
 #define YAW_SPEED_PID_MODE PID_POSITION
-#define YAW_SPEED_PID_MAX_OUT 20000.0f
-#define YAW_SPEED_PID_MAX_IOUT 100.0f
 
+
+//yaw 速度环 PID参数以及 PID最大输出，积分输出
+#ifdef YAE_SPEED_PID_MODE_POSITION
+#define YAW_SPEED_PID_MODE PID_POSITION
+#define YAW_SPEED_PID_MAX_OUT 20000.0f
+#define YAW_SPEED_PID_MAX_IOUT 1000.0f
 #define YAW_SPEED_PID_KP 6000.0f
-#define YAW_SPEED_PID_KI 10.0f
+#define YAW_SPEED_PID_KI 40.0f
+
 #define YAW_SPEED_PID_KD 0.0f
 #endif
 
@@ -50,12 +56,12 @@
 #define YAE_ANGLE_PID_MODE_POSITION
 #ifdef YAE_ANGLE_PID_MODE_POSITION
 #define YAW_ANGLE_PID_MODE PID_POSITION
+
 #define YAW_ANGLE_PID_MAX_OUT 12.0f
 #define YAW_ANGLE_PID_MAX_IOUT 1.0f
-
 #define YAW_ANGLE_PID_KP 35.0f
-#define YAW_ANGLE_PID_KI 2.0f
-#define YAW_ANGLE_PID_KD -1.0f
+#define YAW_ANGLE_PID_KI 0.5f
+#define YAW_ANGLE_PID_KD -3.0f
 #endif
 
 
@@ -94,12 +100,13 @@ typedef struct
 	float relative_angle;
 	float relative_angle_set;
 	float offset_AbToRe;
-	
+
 	PID_Regulator_t speed_pid;
 	PID_Regulator_t angle_pid;
+
 	uint16_t offset_ecd;
 	const Target_t *target;
-	
+
 } Gimbal_Motor_t;
 
 typedef struct
@@ -112,7 +119,19 @@ typedef struct
 	
 } Gimbal_Control_t;
 
+
 extern void gimbal_task(void const * argument);
 extern const Gimbal_Motor_t *get_yaw_motor_point(void);
 extern const Gimbal_Motor_t *get_pitch_motor_point(void);
 #endif
+
+
+ extern void gimbal_task(void const * argument);
+
+
+extern void gimbal_task(void const * argument);
+extern const Gimbal_Motor_t *get_yaw_motor_point(void);
+extern const Gimbal_Motor_t *get_pitch_motor_point(void);
+
+#endif
+

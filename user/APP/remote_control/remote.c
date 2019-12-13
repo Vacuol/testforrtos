@@ -71,7 +71,12 @@ error:
     rc_ctrl.mouse.press_l = 0;
     rc_ctrl.mouse.press_r = 0;
     rc_ctrl.key.v = 0;
+
 	rc_ctrl.key.v2 = 0;
+
+	rc_ctrl.rc.wheel= 0;
+
+
     return 1;
 }
 

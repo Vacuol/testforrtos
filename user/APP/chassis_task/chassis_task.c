@@ -1,11 +1,19 @@
 #include "chassis_task.h"
+#include "arm_math.h"
 
+#define JSCOPE_WATCH_chassis 0
+#if JSCOPE_WATCH_chassis
+//j-scope
+static void Jscope_Watch_chassis(void);
+#endif
 
 static Chassis_Control_t chassis_control;
+static float global_to_local[4];
 
 static void Chassis_Init(Chassis_Control_t *chassis_init);
 static void Chassis_Feedback_Update(Chassis_Control_t *chassis_feedback);
 static void Chassis_Set_Control(Chassis_Control_t *chassis_set);
+static void Chassis_dirction_trainsfer(Chassis_Control_t *chassis_trainsfer);
 static void Chassis_PID(Chassis_Control_t *chassis_pid);
 
 void chassis_task(void const * argument)
@@ -29,6 +37,11 @@ void chassis_task(void const * argument)
 							,chassis_control.chassis_motor[1].speed_pid.out
 							,chassis_control.chassis_motor[2].speed_pid.out
 							,chassis_control.chassis_motor[3].speed_pid.out);
+		
+#if JSCOPE_WATCH_chassis		
+		Jscope_Watch_chassis();
+#endif
+		
 		
 		osDelayUntil(&waitetime, GIMBAL_TASK_CONTROL_TIME);
 	}
@@ -79,12 +92,36 @@ static void Chassis_Set_Control(Chassis_Control_t *chassis_set)
         return;
     }
 	
-	for (i=0;i<4;i++)
-	{
-		chassis_set->chassis_motor[i].speed_set = 3000;
-	}
+	chassis_set->dir.global_front = chassis_set->chassis_RC->rc.ch[3]*5;
+	chassis_set->dir.global_left = -chassis_set->chassis_RC->rc.ch[2]*5;
+	chassis_set->dir.rotate = -chassis_set->chassis_RC->rc.wheel*5;
+	
+	Chassis_dirction_trainsfer(chassis_set);
+	
+	chassis_set->chassis_motor[0].speed_set = chassis_set->dir.local_front + chassis_set->dir.local_left + chassis_set->dir.rotate;
+	chassis_set->chassis_motor[1].speed_set = chassis_set->dir.local_front - chassis_set->dir.local_left + chassis_set->dir.rotate;
+	chassis_set->chassis_motor[2].speed_set = -chassis_set->dir.local_front - chassis_set->dir.local_left + chassis_set->dir.rotate;
+	chassis_set->chassis_motor[3].speed_set = -chassis_set->dir.local_front + chassis_set->dir.local_left + chassis_set->dir.rotate;
 	
 }
+
+static void Chassis_dirction_trainsfer(Chassis_Control_t *chassis_trainsfer)
+{
+	//???????????
+	chassis_trainsfer->dir.M_global_local[0] = arm_cos_f32(chassis_trainsfer->chassis_yaw_motor->relative_angle);
+	chassis_trainsfer->dir.M_global_local[1] = -arm_sin_f32(chassis_trainsfer->chassis_yaw_motor->relative_angle);
+	chassis_trainsfer->dir.M_global_local[2] = -arm_sin_f32(chassis_trainsfer->chassis_yaw_motor->relative_angle);
+	chassis_trainsfer->dir.M_global_local[3] = -arm_cos_f32(chassis_trainsfer->chassis_yaw_motor->relative_angle);
+	
+	chassis_trainsfer->dir.local_front = 
+		chassis_trainsfer->dir.global_front * chassis_trainsfer->dir.M_global_local[0] +
+		chassis_trainsfer->dir.global_left * chassis_trainsfer->dir.M_global_local[1];
+	
+	chassis_trainsfer->dir.local_left =
+		chassis_trainsfer->dir.global_front * chassis_trainsfer->dir.M_global_local[2] +
+		chassis_trainsfer->dir.global_left * chassis_trainsfer->dir.M_global_local[3];
+}
+
 
 static void Chassis_PID(Chassis_Control_t *chassis_pid)
 {
@@ -101,7 +138,16 @@ static void Chassis_PID(Chassis_Control_t *chassis_pid)
 	}
 }
 
-
+#if JSCOPE_WATCH_chassis
+float jlook_reangle,jlook_abangle;
+float jlook_ch3;
+static void Jscope_Watch_chassis(void)
+{
+	jlook_reangle = chassis_control.chassis_yaw_motor->relative_angle;
+	jlook_abangle = chassis_control.chassis_yaw_motor->absolute_angle;
+	jlook_ch3 = chassis_control.chassis_RC->rc.ch[3];
+}
+#endif
 
 
 

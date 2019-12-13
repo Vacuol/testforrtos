@@ -47,6 +47,7 @@ typedef struct
 } Aim_t;
 
 extern uint8_t TX2_data[1];
+extern Aim_t aim;
 extern void auto_aim_task(void const * argument);
 extern void Getdata_Camera();
 extern const Target_t *get_y_autoaim_point(void);
