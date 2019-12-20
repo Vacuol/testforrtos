@@ -55,6 +55,7 @@ osThreadId SensortaskHandle;
 osThreadId gimbaltaskHandle;
 osThreadId chassistaskHandle;
 osThreadId autoaimtaskHandle;
+osThreadId ShoottaskHandle;
 
 /* Private function prototypes -----------------------------------------------*/
 /* USER CODE BEGIN FunctionPrototypes */
@@ -68,6 +69,7 @@ extern void Sensor_task(void const * argument);
 extern void gimbal_task(void const * argument);
 extern void chassis_task(void const * argument);
 extern void auto_aim_task(void const * argument);
+extern void shoot_task(void const * argument);
 
 void MX_FREERTOS_Init(void); /* (MISRA C 2004 rule 8.1) */
 
@@ -141,6 +143,10 @@ void MX_FREERTOS_Init(void) {
   /* definition and creation of autoaimtask */
   osThreadDef(autoaimtask, auto_aim_task, osPriorityLow, 0, 128);
   autoaimtaskHandle = osThreadCreate(osThread(autoaimtask), NULL);
+
+  /* definition and creation of Shoottask */
+  osThreadDef(Shoottask, shoot_task, osPriorityNormal, 0, 128);
+  ShoottaskHandle = osThreadCreate(osThread(Shoottask), NULL);
 
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */

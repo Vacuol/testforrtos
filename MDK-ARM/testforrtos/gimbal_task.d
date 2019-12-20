@@ -65,3 +65,5 @@ testforrtos\gimbal_task.o: ..\user\APP\filter\filter.h
 testforrtos\gimbal_task.o: ..\user\DSP\Include\arm_math.h
 testforrtos\gimbal_task.o: ../Drivers/CMSIS/Include/core_cm4.h
 testforrtos\gimbal_task.o: D:\soft\keil5\ARM\ARMCC\Bin\..\include\string.h
+testforrtos\gimbal_task.o: ..\user\APP\shoot_task\shoot_task.h
+testforrtos\gimbal_task.o: ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.h

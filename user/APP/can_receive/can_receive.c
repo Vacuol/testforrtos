@@ -2,7 +2,7 @@
 #include "detect_task.h"
 
 //声明电机变量
-static motor_measure_t motor_yaw, motor_pit, motor_trigger, motor_chassis[4];
+static motor_measure_t motor_yaw, motor_pit, motor_rammer, motor_chassis[4];
 
 CAN_RxHeaderTypeDef  Rx1Message;
 CAN_TxHeaderTypeDef  Tx1Message;
@@ -73,9 +73,9 @@ const motor_measure_t *get_Pitch_Gimbal_Motor_Measure_Point(void)
     return &motor_pit;
 }
 //返回trigger电机变量地址，通过指针方式获得原始数据
-const motor_measure_t *get_Trigger_Motor_Measure_Point(void)
+const motor_measure_t *get_Rammer_Motor_Measure_Point(void)
 {
-    return &motor_trigger;
+    return &motor_rammer;
 }
 //返回底盘电机变量地址，通过指针方式获得原始数据
 const motor_measure_t *get_Chassis_Motor_Measure_Point(uint8_t i)
@@ -118,6 +118,11 @@ void CAN1_Getdata(CAN_RxHeaderTypeDef *pHeader,uint8_t aData[])
 			//DetectHook(ChassisMotor1TOE + i);
 			
 		}break;
+		case CAN_RAMMER_MOTOR_ID:
+		{
+			get_motor_measure(&motor_rammer, aData);
+			//记录时间
+		}
 		default:
 		{
 			
@@ -154,7 +159,7 @@ void Underpan_motor_output(int16_t iq1,int16_t iq2,int16_t iq3,int16_t iq4)
 	HAL_CAN_AddTxMessage(&hcan1, &Tx1Message,  TxData, &pTxMailbox);
 }
 
-void CAN_CMD_Gimbal(int16_t pitch,int16_t yaw)
+void CAN_CMD_Gimbal(int16_t pitch,int16_t yaw,int16_t rammer)
 {
 	static uint8_t TxData[8];
 	Tx1Message.StdId = 0x1ff;
@@ -166,11 +171,26 @@ void CAN_CMD_Gimbal(int16_t pitch,int16_t yaw)
 	TxData[1] = pitch;
 	TxData[2] = yaw >> 8;
 	TxData[3] = yaw;
-//	TxData[4] = iq3 >> 8;
-//	TxData[5] = iq3;
+	TxData[4] = rammer >> 8;
+	TxData[5] = rammer;
 
 	HAL_CAN_AddTxMessage(&hcan1, &Tx1Message,  TxData, &pTxMailbox);
 }
+
+void CAN_CMD_Rammer(int16_t rammer)
+{
+	static uint8_t TxData[8];
+	Tx1Message.StdId = 0x1ff;
+	Tx1Message.IDE = CAN_ID_STD;
+	Tx1Message.RTR = CAN_RTR_DATA;
+	Tx1Message.DLC = 0x08;
+	
+	TxData[4] = rammer >> 8;
+	TxData[5] = rammer;
+
+	HAL_CAN_AddTxMessage(&hcan1, &Tx1Message,  TxData, &pTxMailbox);
+}
+
 
 
 

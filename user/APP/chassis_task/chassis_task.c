@@ -43,7 +43,7 @@ void chassis_task(void const * argument)
 #endif
 		
 		
-		osDelayUntil(&waitetime, GIMBAL_TASK_CONTROL_TIME);
+		osDelayUntil(&waitetime, CHASSIS_TASK_CONTROL_TIME);
 	}
 }
 
@@ -107,7 +107,7 @@ static void Chassis_Set_Control(Chassis_Control_t *chassis_set)
 
 static void Chassis_dirction_trainsfer(Chassis_Control_t *chassis_trainsfer)
 {
-	//???????????
+	//
 	chassis_trainsfer->dir.M_global_local[0] = arm_cos_f32(chassis_trainsfer->chassis_yaw_motor->relative_angle);
 	chassis_trainsfer->dir.M_global_local[1] = -arm_sin_f32(chassis_trainsfer->chassis_yaw_motor->relative_angle);
 	chassis_trainsfer->dir.M_global_local[2] = -arm_sin_f32(chassis_trainsfer->chassis_yaw_motor->relative_angle);

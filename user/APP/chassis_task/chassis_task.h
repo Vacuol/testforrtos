@@ -12,6 +12,8 @@
 #include "gimbal_task.h"
 #include "pid.h"
 
+#define CHASSIS_TASK_CONTROL_TIME 1
+
 //
 #define CHASSIS_PID_MODE PID_POSITION
 #define CHASSIS_PID_MAX_OUT 3000

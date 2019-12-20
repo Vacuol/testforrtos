@@ -50,6 +50,7 @@ testforrtos\main.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/event_gro
 testforrtos\main.o: ../Inc/can.h
 testforrtos\main.o: ../Inc/dma.h
 testforrtos\main.o: ../Inc/spi.h
+testforrtos\main.o: ../Inc/tim.h
 testforrtos\main.o: ../Inc/usart.h
 testforrtos\main.o: ../Inc/gpio.h
 testforrtos\main.o: ..\user\APP\can_receive\can_receive.h

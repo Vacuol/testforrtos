@@ -1,6 +1,23 @@
+/*
+书写原则
+1.原则上不允许全局变量，变量的传递需要通过函数，将变量的地址传递出去
+理由：方便各部分协调配合工作。每个文件的程序只对自己和自己底层代码负责，不需要配合上层代码。例如陀螺仪数据的传递、电机数据的传递等。
+
+2.原则上不允许有数字出现在.c文件中，例如PID的各种参数应该在.h文件中define出来，比如：
+	#define YAW_SPEED_PID_MAX_OUT 20000.0f
+
+2.命名规范如下：
+	函数命名：Gimbal_AnglePID_Calculate(PID_Regulator_t *pid , float fdb, float set, float DELTA);
+			首字母大写，单词后面小写。
+	宏定义：#define YAW_SPEED_PID_MAX_OUT 20000.0f
+			宏定义一般全部大写
+	变量：float filted_angle;
+	变量一般全部小写
+*/
 #include "gimbal_task.h"
 #include "filter.h"
 #include "arm_math.h"
+#include "shoot_task.h"
 
 #define int_abs(x) ((x) > 0 ? (x) : (-x))
 
@@ -105,7 +122,7 @@ void gimbal_task(void const * argument)
 		gimbal_yaw_out_filter.raw_value = gimbal_control.yaw_motor.speed_pid.out;//y * 3000;
 		Chebyshev100HzLPF(&gimbal_yaw_out_filter);
 		Chebyshev100HzLPF(&gimbal_pitch_out_filter);
-		CAN_CMD_Gimbal(gimbal_pitch_out_filter.filtered_value, gimbal_control.yaw_motor.speed_pid.out);
+		CAN_CMD_Gimbal(gimbal_pitch_out_filter.filtered_value, gimbal_control.yaw_motor.speed_pid.out,gimbal_control.rammer_out);
 
 	
 #if JSCOPE_WATCH_gimbal		
@@ -135,6 +152,8 @@ static void Gimbal_Init(Gimbal_Control_t *gimbal_init)
 	//电机数据指针获取
 	gimbal_init->pitch_motor.gimbal_motor_measure = get_Pitch_Gimbal_Motor_Measure_Point();
 	gimbal_init->yaw_motor.gimbal_motor_measure = get_Yaw_Gimbal_Motor_Measure_Point();
+	//拨弹电机输出指针获取
+	gimbal_init->rammer_motor_out_point = get_rammer_out_point();
 	//陀螺仪数据指针获取
     gimbal_init->gimbal_INT_angle_point = get_INS_angle_point();
     gimbal_init->gimbal_INT_gyro_point = get_MPU6500_Gyro_Data_Point();
@@ -149,7 +168,6 @@ static void Gimbal_Init(Gimbal_Control_t *gimbal_init)
 	//pitch电机PID初始化
 	PID_Init(&gimbal_init->pitch_motor.speed_pid, PITCH_SPEED_PID_MODE,PITCH_SPEED_PID_MAX_OUT,PITCH_SPEED_PID_MAX_IOUT,PITCH_SPEED_PID_KP,PITCH_SPEED_PID_KI,PITCH_SPEED_PID_KD);
 	PID_Init(&gimbal_init->pitch_motor.angle_pid, PITCH_ANGLE_PID_MODE,PITCH_ANGLE_PID_MAX_OUT,PITCH_ANGLE_PID_MAX_IOUT,PITCH_ANGLE_PID_KP,PITCH_ANGLE_PID_KI,PITCH_ANGLE_PID_KD);
-
 	//云台电机中值初始化
 	gimbal_init->pitch_motor.offset_ecd = PITCH_OFFSET_ECD;
 	gimbal_init->yaw_motor.offset_ecd = YAW_OFFSET_ECD;
@@ -176,7 +194,7 @@ static void Gimbal_Position_Reset(Gimbal_Control_t *gimbal_pos_reset)
 		Gimbal_PID(&gimbal_control);
 		gimbal_pitch_out_filter.raw_value = gimbal_control.pitch_motor.speed_pid.out;
 		Chebyshev100HzLPF(&gimbal_pitch_out_filter);
-		CAN_CMD_Gimbal(gimbal_pitch_out_filter.filtered_value, 0);
+		CAN_CMD_Gimbal(gimbal_pitch_out_filter.filtered_value, 0,0);
 		
 		osDelayUntil(&waitetime, GIMBAL_TASK_CONTROL_TIME);
 	}
@@ -210,11 +228,12 @@ static void Gimbal_Feedback_Update(Gimbal_Control_t *gimbal_feedback)
 	gimbal_feedback->yaw_motor.absolute_angle = Motor_Absolute_to_Relative_Change(gimbal_feedback->yaw_motor.absolute_angle ,
 																					gimbal_feedback->yaw_motor.offset_AbToRe);
 	//云台角度数据更新
-
 	gimbal_feedback->pitch_motor.relative_angle = Motor_ecd_to_angle_Change(gimbal_feedback->pitch_motor.gimbal_motor_measure->ecd,
 																			gimbal_feedback->pitch_motor.offset_ecd);
 	gimbal_feedback->yaw_motor.relative_angle = Motor_ecd_to_angle_Change(gimbal_feedback->yaw_motor.gimbal_motor_measure->ecd,
 																		  gimbal_feedback->yaw_motor.offset_ecd);
+	//rammer数据更新
+	gimbal_feedback->rammer_out = *(gimbal_feedback->rammer_motor_out_point);
 
 }
 
@@ -262,11 +281,9 @@ static void Gimbal_Set_Contorl(Gimbal_Control_t *gimbal_set_control)
 
 	if (gimbal_set_control->gimbal_rc_ctrl->rc.sright  == RC_UP)
 	{
-		gimbal_set_control->pitch_motor.relative_angle_set = gimbal_set_control->pitch_motor.relative_angle_set - gimbal_set_control->gimbal_rc_ctrl->rc.ch[1]/100000.0;
-		LimitMax(gimbal_set_control->pitch_motor.relative_angle_set, 0.3);
+		gimbal_set_control->pitch_motor.relative_angle_set = gimbal_set_control->pitch_motor.relative_angle_set - aim.y.angle[0];
 		gimbal_set_control->yaw_motor.absolute_angle_set = gimbal_set_control->yaw_motor.absolute_angle - aim.x.filted_angle;
-		if (gimbal_set_control->yaw_motor.absolute_angle_set > PI) gimbal_set_control->yaw_motor.absolute_angle_set -=2*PI;
-		if (gimbal_set_control->yaw_motor.absolute_angle_set <-PI) gimbal_set_control->yaw_motor.absolute_angle_set +=2*PI;
+
 	}
 	
 	
@@ -274,12 +291,12 @@ static void Gimbal_Set_Contorl(Gimbal_Control_t *gimbal_set_control)
 	if (gimbal_set_control->gimbal_rc_ctrl->rc.sright == RC_MID)
 	{
 		gimbal_set_control->pitch_motor.relative_angle_set = gimbal_set_control->pitch_motor.relative_angle_set - gimbal_set_control->gimbal_rc_ctrl->rc.ch[1]/100000.0;
-		LimitMax(gimbal_set_control->pitch_motor.relative_angle_set, 0.3);
 		gimbal_set_control->yaw_motor.absolute_angle_set = gimbal_set_control->yaw_motor.absolute_angle_set - gimbal_set_control->gimbal_rc_ctrl->rc.ch[0]/100000.0;
-		if (gimbal_set_control->yaw_motor.absolute_angle_set > PI) gimbal_set_control->yaw_motor.absolute_angle_set -=2*PI;
-		if (gimbal_set_control->yaw_motor.absolute_angle_set <-PI) gimbal_set_control->yaw_motor.absolute_angle_set +=2*PI;
 	}
 	
+	LimitMax(gimbal_set_control->pitch_motor.relative_angle_set, 0.3);
+	if (gimbal_set_control->yaw_motor.absolute_angle_set > PI) gimbal_set_control->yaw_motor.absolute_angle_set -=2*PI;
+	if (gimbal_set_control->yaw_motor.absolute_angle_set <-PI) gimbal_set_control->yaw_motor.absolute_angle_set +=2*PI;
 	
 }
 

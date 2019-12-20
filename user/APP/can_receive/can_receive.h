@@ -14,7 +14,7 @@ typedef enum
 
     CAN_PIT_MOTOR_ID = 0x205,
     CAN_YAW_MOTOR_ID = 0x206,
-    CAN_TRIGGER_MOTOR_ID = 0x207,
+    CAN_RAMMER_MOTOR_ID = 0x207,
 //    CAN_GIMBAL_ALL_ID = 0x1FF,
 
 } can_msg_id_e;
@@ -44,15 +44,14 @@ extern const motor_measure_t *get_Yaw_Gimbal_Motor_Measure_Point(void);
 //返回pitch电机变量地址，通过指针方式获取原始数据
 extern const motor_measure_t *get_Pitch_Gimbal_Motor_Measure_Point(void);
 //返回trigger电机变量地址，通过指针方式获取原始数据
-extern const motor_measure_t *get_Trigger_Motor_Measure_Point(void);
+extern const motor_measure_t *get_Rammer_Motor_Measure_Point(void);
 //返回底盘电机变量地址，通过指针方式获取原始数据,i的范围是0-3，对应0x201-0x204,
 extern const motor_measure_t *get_Chassis_Motor_Measure_Point(uint8_t i);
 
 //void HAL_CAN_RxFifo1MsgPendingCallback(CAN_HandleTypeDef *hcan);
 extern void Underpan_motor_output(int16_t iq1,int16_t iq2,int16_t iq3,int16_t iq4);
-//void Lift_motor_output(int16_t iq1,int16_t iq2);
-//void CatchPro_motor_output(int16_t iq1,int16_t iq2,int16_t iq3,int16_t iq4);
-extern void CAN_CMD_Gimbal(int16_t iq1,int16_t iq2);
+extern void CAN_CMD_Gimbal(int16_t pitch,int16_t yaw,int16_t rammer);
+extern void CAN_CMD_Rammer(int16_t rammer);
 
 
 #endif

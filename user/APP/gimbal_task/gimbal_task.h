@@ -45,9 +45,8 @@
 #define YAW_SPEED_PID_MODE PID_POSITION
 #define YAW_SPEED_PID_MAX_OUT 20000.0f
 #define YAW_SPEED_PID_MAX_IOUT 1000.0f
-#define YAW_SPEED_PID_KP 6000.0f
+#define YAW_SPEED_PID_KP 5000.0f
 #define YAW_SPEED_PID_KI 40.0f
-
 #define YAW_SPEED_PID_KD 0.0f
 #endif
 
@@ -70,23 +69,23 @@
 #ifdef PITCH_SPEED_PID_MODE_POSITION
 #define PITCH_SPEED_PID_MODE PID_POSITION
 #define PITCH_SPEED_PID_MAX_OUT 20000.0f
-#define PITCH_SPEED_PID_MAX_IOUT 100.0f
+#define PITCH_SPEED_PID_MAX_IOUT 1000.0f
 
 #define PITCH_SPEED_PID_KP 5000.0f
-#define PITCH_SPEED_PID_KI 10.0f
-#define PITCH_SPEED_PID_KD 0.0f
+#define PITCH_SPEED_PID_KI 40.0f
+#define PITCH_SPEED_PID_KD -0.0f
 #endif
 
 //pitch 角度环 PID参数 外环位置式PID 
 #define PITCH_ANGLE_PID_MODE_POSITION
 #ifdef PITCH_ANGLE_PID_MODE_POSITION
 #define PITCH_ANGLE_PID_MODE PID_POSITION
-#define PITCH_ANGLE_PID_MAX_OUT 10.10f
-#define PITCH_ANGLE_PID_MAX_IOUT 1.0f
+#define PITCH_ANGLE_PID_MAX_OUT 30.10f
+#define PITCH_ANGLE_PID_MAX_IOUT 0.5f
 
-#define PITCH_ANGLE_PID_KP 20.0f
-#define PITCH_ANGLE_PID_KI 0.0f
-#define PITCH_ANGLE_PID_KD -0.7f
+#define PITCH_ANGLE_PID_KP 25.0f
+#define PITCH_ANGLE_PID_KI 0.6f
+#define PITCH_ANGLE_PID_KD -1.0f
 #endif
 
 typedef struct
@@ -114,6 +113,8 @@ typedef struct
 	const RC_ctrl_t *gimbal_rc_ctrl;
     const float	*gimbal_INT_angle_point;
     const float *gimbal_INT_gyro_point;
+	const float *rammer_motor_out_point;
+	float rammer_out;
 	Gimbal_Motor_t pitch_motor;
 	Gimbal_Motor_t yaw_motor;
 	
@@ -126,7 +127,7 @@ extern const Gimbal_Motor_t *get_pitch_motor_point(void);
 #endif
 
 
- extern void gimbal_task(void const * argument);
+extern void gimbal_task(void const * argument);
 
 
 extern void gimbal_task(void const * argument);

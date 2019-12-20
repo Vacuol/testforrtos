@@ -17,12 +17,12 @@ Library Manager: ArmAr.exe V5.06 update 6 (build 750)
 Hex Converter:   FromElf.exe V5.06 update 6 (build 750)
 CPU DLL:         SARMCM3.DLL V5.26.2.0
 Dialog DLL:      DCM.DLL V1.17.2.0
-Target DLL:      Segger\JL2CM3.dll V2.99.31.0
+Target DLL:      Segger\JL2CM3.dll V2.99.15.0
 Dialog DLL:      TCM.DLL V1.36.1.0
  
 <h2>Project:</h2>
-D:\GitHub\testforrtos-- (1)\MDK-ARM\testforrtos.uvprojx
-Project File Date:  12/01/2019
+D:\GitHub\testforrtos\MDK-ARM\testforrtos.uvprojx
+Project File Date:  12/20/2019
 
 <h2>Output:</h2>
 *** Using Compiler 'V5.06 update 6 (build 750)', folder: 'D:\soft\keil5\ARM\ARMCC\Bin'
@@ -34,19 +34,17 @@ compiling gimbal_task.c...
   extern void Getdata_Camera();
 ..\user\APP\auto_aim\auto_aim_task.h(56): warning:  #1-D: last line of file ends without a newline
   #endif
-..\user\APP\gimbal_task\gimbal_task.c(62): warning:  #177-D: variable "timeconter"  was declared but never referenced
+..\user\APP\gimbal_task\gimbal_task.c(79): warning:  #177-D: variable "timeconter"  was declared but never referenced
   	int16_t timeconter;
-..\user\APP\gimbal_task\gimbal_task.c(63): warning:  #177-D: variable "i"  was declared but never referenced
+..\user\APP\gimbal_task\gimbal_task.c(80): warning:  #177-D: variable "i"  was declared but never referenced
   	char i;
-..\user\APP\gimbal_task\gimbal_task.c(266): warning:  #1035-D: single-precision operand implicitly converted to double-precision
-  		LimitMax(gimbal_set_control->pitch_motor.relative_angle_set, 0.3);
-..\user\APP\gimbal_task\gimbal_task.c(277): warning:  #1035-D: single-precision operand implicitly converted to double-precision
-  		LimitMax(gimbal_set_control->pitch_motor.relative_angle_set, 0.3);
-..\user\APP\gimbal_task\gimbal_task.c: 7 warnings, 0 errors
+..\user\APP\gimbal_task\gimbal_task.c(297): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+  	LimitMax(gimbal_set_control->pitch_motor.relative_angle_set, 0.3);
+..\user\APP\gimbal_task\gimbal_task.c: 6 warnings, 0 errors
 linking...
-Program Size: Code=35756 RO-data=3036 RW-data=640 ZI-data=19752  
+Program Size: Code=37272 RO-data=3076 RW-data=656 ZI-data=19904  
 FromELF: creating hex file...
-"testforrtos\testforrtos.axf" - 0 Error(s), 7 Warning(s).
+"testforrtos\testforrtos.axf" - 0 Error(s), 6 Warning(s).
 
 <h2>Software Packages used:</h2>
 
@@ -69,7 +67,7 @@ Package Vendor: Keil
 <h2>Collection of Component Files used:</h2>
 
    * Component: ARM::CMSIS:CORE:5.1.2
-Build Time Elapsed:  00:00:02
+Build Time Elapsed:  00:00:03
 </pre>
 </body>
 </html>
