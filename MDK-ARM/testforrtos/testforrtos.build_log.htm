@@ -22,29 +22,31 @@ Dialog DLL:      TCM.DLL V1.36.1.0
  
 <h2>Project:</h2>
 D:\GitHub\testforrtos\MDK-ARM\testforrtos.uvprojx
-Project File Date:  12/20/2019
+Project File Date:  12/22/2019
 
 <h2>Output:</h2>
 *** Using Compiler 'V5.06 update 6 (build 750)', folder: 'D:\soft\keil5\ARM\ARMCC\Bin'
 Build target 'testforrtos'
-compiling gimbal_task.c...
+compiling auto_aim_task.c...
 ../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f427xx.h(68): warning:  #47-D: incompatible redefinition of macro "__FPU_PRESENT" 
   #define __FPU_PRESENT             1U       /*!< FPU present                                   */
 ..\user\APP\auto_aim\auto_aim_task.h(52): warning:  #1295-D: Deprecated declaration Getdata_Camera - give arg types
   extern void Getdata_Camera();
 ..\user\APP\auto_aim\auto_aim_task.h(56): warning:  #1-D: last line of file ends without a newline
   #endif
-..\user\APP\gimbal_task\gimbal_task.c(79): warning:  #177-D: variable "timeconter"  was declared but never referenced
-  	int16_t timeconter;
-..\user\APP\gimbal_task\gimbal_task.c(80): warning:  #177-D: variable "i"  was declared but never referenced
-  	char i;
-..\user\APP\gimbal_task\gimbal_task.c(297): warning:  #1035-D: single-precision operand implicitly converted to double-precision
-  	LimitMax(gimbal_set_control->pitch_motor.relative_angle_set, 0.3);
-..\user\APP\gimbal_task\gimbal_task.c: 6 warnings, 0 errors
+..\user\APP\auto_aim\auto_aim_task.c(79): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+  			aim.x.filted_angle = F_aim.filtered_value[0] + F_aim.filtered_value[1]*AURO_AIM_CONTROL_TIME*0.03;
+..\user\APP\auto_aim\auto_aim_task.c(46): warning:  #177-D: variable "i"  was declared but never referenced
+  	uint8_t i;
+..\user\APP\auto_aim\auto_aim_task.c(182): warning:  #177-D: variable "i"  was declared but never referenced
+  	uint8_t i,j; 
+..\user\APP\auto_aim\auto_aim_task.c(182): warning:  #177-D: variable "j"  was declared but never referenced
+  	uint8_t i,j; 
+..\user\APP\auto_aim\auto_aim_task.c: 7 warnings, 0 errors
 linking...
-Program Size: Code=37272 RO-data=3076 RW-data=656 ZI-data=19904  
+Program Size: Code=37368 RO-data=3076 RW-data=660 ZI-data=19900  
 FromELF: creating hex file...
-"testforrtos\testforrtos.axf" - 0 Error(s), 6 Warning(s).
+"testforrtos\testforrtos.axf" - 0 Error(s), 7 Warning(s).
 
 <h2>Software Packages used:</h2>
 
@@ -67,7 +69,7 @@ Package Vendor: Keil
 <h2>Collection of Component Files used:</h2>
 
    * Component: ARM::CMSIS:CORE:5.1.2
-Build Time Elapsed:  00:00:03
+Build Time Elapsed:  00:00:07
 </pre>
 </body>
 </html>

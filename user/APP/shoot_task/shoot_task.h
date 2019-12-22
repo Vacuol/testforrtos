@@ -41,6 +41,7 @@ typedef struct
 	
 	Rammer_Motor_t rammer;
 	uint8_t shoot_fre_set;
+	uint16_t bullet_speed;
 	
 } Shoot_Control_t;
 

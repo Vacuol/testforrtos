@@ -270,7 +270,7 @@ static float Motor_ecd_to_angle_Change(uint16_t ecd, uint16_t offset_ecd)
 static void Gimbal_Set_Contorl(Gimbal_Control_t *gimbal_set_control)
 {
 
-	//右上开关拨到中间，回到中间
+	//NO SIGENAL
 	if (gimbal_set_control->gimbal_rc_ctrl->rc.sright == 0)
 	{
 		gimbal_set_control->pitch_motor.relative_angle_set = -0;
@@ -281,7 +281,7 @@ static void Gimbal_Set_Contorl(Gimbal_Control_t *gimbal_set_control)
 
 	if (gimbal_set_control->gimbal_rc_ctrl->rc.sright  == RC_UP)
 	{
-		gimbal_set_control->pitch_motor.relative_angle_set = gimbal_set_control->pitch_motor.relative_angle_set - aim.y.angle[0];
+		gimbal_set_control->pitch_motor.relative_angle_set = gimbal_set_control->pitch_motor.relative_angle - aim.y.angle[0];
 		gimbal_set_control->yaw_motor.absolute_angle_set = gimbal_set_control->yaw_motor.absolute_angle - aim.x.filted_angle;
 
 	}

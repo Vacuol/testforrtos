@@ -3,7 +3,6 @@
 #include "kalman_filter.h"
 #include "usart.h"
 #include <stdlib.h>
-//#include "math.h"
 
 #define int_abs(x) ((x) > 0 ? (x) : (-x))
 
@@ -29,8 +28,6 @@ float fs[]={
 22.0,24, 26, 28, 30, 32, 34, 36, 38,50, 60, 70, 
 80, 90, 100, 110, 120, 200, 250, 333};
 #endif 
-
-
 
 static void Aim_Init(Aim_t *aim_init, kalman_filter_init_t *I);
 static void Aim_Feedback_Update(Aim_t *aim);
@@ -247,14 +244,16 @@ void Getdata_Camera()
 }
 
 #if JSCOPE_WATCH_aim
-float jlook_x_filtespeed,jlook_x_filterangle;
+float jlook_yrelative,jlook_yinitial,jlook_yangle;
 
 
 static void Jscope_Watch_gimbal(void)
 {
 
-	jlook_x_filterangle = aim.x.filted_angle;
-	jlook_x_filtespeed = aim.x.filted_speed;
+	jlook_yrelative = aim.y.relative;
+	jlook_yinitial = aim.y.initial;
+	jlook_yangle = aim.y.angle[0];
+	
 }
 #endif
 

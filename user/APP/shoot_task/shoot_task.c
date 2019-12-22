@@ -7,6 +7,7 @@ static void Shoot_Init(Shoot_Control_t *shoot_init);
 static void Shoot_Feedback_Update(Shoot_Control_t *shoot_feedback);
 static void Shoot_Set_Control(Shoot_Control_t *shoot_set);
 static void Shoot_PID(Shoot_Control_t *shoot_pid);
+static void Shoot_setspeed(uint16_t speed);
 
 void shoot_task(void const * argument)
 {
@@ -14,12 +15,7 @@ void shoot_task(void const * argument)
 	
 	Shoot_Init(&shoot_Control);
 	/** 开启摩擦轮PWM，初始化速度为0 */
-	HAL_TIM_PWM_Start(&htim1,TIM_CHANNEL_1);
-	HAL_TIM_PWM_Start(&htim1,TIM_CHANNEL_4);
-	TIM1->CCR1=1000;
-	TIM1->CCR4=1000;
-	osDelay(2000);
-	
+	osDelay(9000);
 	waitetime = xTaskGetTickCount();
 	
 	for (;;)
@@ -46,12 +42,23 @@ static void Shoot_Init(Shoot_Control_t *shoot_init)
 		return ;
 	}
 	
+	HAL_TIM_PWM_Start(&htim1,TIM_CHANNEL_1);
+	HAL_TIM_PWM_Start(&htim1,TIM_CHANNEL_4);
+	
+	Shoot_setspeed(0);
+	
 	//遥控器获取数据
 	shoot_init->shoot_RC = get_remote_control_point();
 	//拨弹电机数据指针获取
 	shoot_init->rammer.gimbal_motor_measure = get_Rammer_Motor_Measure_Point();
 	//拨弹电机速度pid初始化
 	PID_Init(&shoot_init->rammer.speed_pid, RAMMER_SPEED_PID_MODE,RAMMER_SPEED_PID_MAX_OUT,RAMMER_SPEED_PID_MAX_IOUT,RAMMER_SPEED_PID_KP,RAMMER_SPEED_PID_KI,RAMMER_SPEED_PID_KD);
+}
+
+static void Shoot_setspeed(uint16_t speed)
+{
+	TIM1->CCR1=1000+speed;
+	TIM1->CCR4=1000+speed;
 }
 
 static void Shoot_Feedback_Update(Shoot_Control_t *shoot_feedback)
@@ -71,8 +78,8 @@ static void Shoot_Set_Control(Shoot_Control_t *shoot_set)
         return;
     }
 	
-	if (shoot_set->shoot_RC->rc.ch[1] == RC_UP) 
-		shoot_set->rammer.speed_set = 500;
+	if (shoot_set->shoot_RC->rc.sleft == RC_UP) 
+		shoot_set->rammer.speed_set = 4000;
 	else shoot_set->rammer.speed_set = 0;
 	
 	if (shoot_set->shoot_RC->rc.ch[1] == RC_UP || shoot_set->shoot_RC->rc.ch[1] == RC_MID)
