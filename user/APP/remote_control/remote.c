@@ -48,11 +48,11 @@ uint8_t RC_data_is_error(void)
     {
         goto error;
     }
-    if (rc_ctrl.rc.sleft == 0)
+    if ( (rc_ctrl.rc.sleft != 1) || (rc_ctrl.rc.sleft != 2) || (rc_ctrl.rc.sleft != 3) )
     {
         goto error;
     }
-    if (rc_ctrl.rc.sright == 0)
+    if ( (rc_ctrl.rc.sright != 1) || (rc_ctrl.rc.sright != 2) || (rc_ctrl.rc.sright != 3) )
     {
         goto error;
     }

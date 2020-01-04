@@ -1,7 +1,7 @@
 #include "chassis_task.h"
 #include "arm_math.h"
 
-#define JSCOPE_WATCH_chassis 0
+#define JSCOPE_WATCH_chassis 1 
 #if JSCOPE_WATCH_chassis
 //j-scope
 static void Jscope_Watch_chassis(void);
@@ -138,7 +138,7 @@ static void Chassis_PID(Chassis_Control_t *chassis_pid)
 	}
 }
 
-#if JSCOPE_WATCH_chassis
+#if JSCOPE_WATCH_chassis 
 float jlook_reangle,jlook_abangle;
 float jlook_ch3;
 static void Jscope_Watch_chassis(void)

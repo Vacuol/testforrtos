@@ -190,8 +190,14 @@ static void Gimbal_Position_Reset(Gimbal_Control_t *gimbal_pos_reset)
 		//仿照主任务，让云台抬升到水平位置
 		Gimbal_Feedback_Update(gimbal_pos_reset);
 		gimbal_pos_reset->pitch_motor.relative_angle_set = -0;
-						
-		Gimbal_PID(&gimbal_control);
+		
+		//pitch 
+		Gimbal_AnglePID_Calculate(&gimbal_pos_reset->pitch_motor.angle_pid , gimbal_pos_reset->pitch_motor.relative_angle,
+			gimbal_pos_reset->pitch_motor.relative_angle_set, gimbal_pos_reset->pitch_motor.gyro);
+	
+		gimbal_pos_reset->pitch_motor.gyro_set = gimbal_pos_reset->pitch_motor.angle_pid.out;
+			PID_Calculate(&gimbal_pos_reset->pitch_motor.speed_pid, gimbal_pos_reset->pitch_motor.gyro, gimbal_pos_reset->pitch_motor.gyro_set);
+
 		gimbal_pitch_out_filter.raw_value = gimbal_control.pitch_motor.speed_pid.out;
 		Chebyshev100HzLPF(&gimbal_pitch_out_filter);
 		CAN_CMD_Gimbal(gimbal_pitch_out_filter.filtered_value, 0,0);
@@ -205,10 +211,11 @@ static void Gimbal_Position_Reset(Gimbal_Control_t *gimbal_pos_reset)
 	
 	gimbal_pos_reset->yaw_motor.offset_AbToRe = gimbal_pos_reset->yaw_motor.absolute_angle
 													-gimbal_pos_reset->yaw_motor.relative_angle;
+	
+	Gimbal_Feedback_Update(gimbal_pos_reset);
 
 	gimbal_pos_reset->yaw_motor.absolute_angle_set = gimbal_pos_reset->yaw_motor.absolute_angle;
-
-
+	
 }
 
 static void Gimbal_Feedback_Update(Gimbal_Control_t *gimbal_feedback)
@@ -273,15 +280,13 @@ static void Gimbal_Set_Contorl(Gimbal_Control_t *gimbal_set_control)
 	//NO SIGENAL
 	if (gimbal_set_control->gimbal_rc_ctrl->rc.sright == 0)
 	{
-		gimbal_set_control->pitch_motor.relative_angle_set = -0;
-		gimbal_set_control->yaw_motor.absolute_angle_set = gimbal_set_control->yaw_motor.absolute_angle;
+		gimbal_set_control->pitch_motor.absolute_angle_set = -0;
+		gimbal_set_control->yaw_motor.absolute_angle_set = gimbal_set_control->yaw_motor.absolute_angle_set;
 	}
-
-
 
 	if (gimbal_set_control->gimbal_rc_ctrl->rc.sright  == RC_UP)
 	{
-		gimbal_set_control->pitch_motor.relative_angle_set = gimbal_set_control->pitch_motor.relative_angle - aim.y.angle[0];
+		gimbal_set_control->pitch_motor.absolute_angle_set = gimbal_set_control->pitch_motor.absolute_angle_set - aim.y.filted_angle;
 		gimbal_set_control->yaw_motor.absolute_angle_set = gimbal_set_control->yaw_motor.absolute_angle - aim.x.filted_angle;
 
 	}
@@ -290,11 +295,11 @@ static void Gimbal_Set_Contorl(Gimbal_Control_t *gimbal_set_control)
 	//右上开关拨到中间，回到中间
 	if (gimbal_set_control->gimbal_rc_ctrl->rc.sright == RC_MID)
 	{
-		gimbal_set_control->pitch_motor.relative_angle_set = gimbal_set_control->pitch_motor.relative_angle_set - gimbal_set_control->gimbal_rc_ctrl->rc.ch[1]/100000.0;
+		gimbal_set_control->pitch_motor.absolute_angle_set = gimbal_set_control->pitch_motor.absolute_angle_set - gimbal_set_control->gimbal_rc_ctrl->rc.ch[1]/100000.0;
 		gimbal_set_control->yaw_motor.absolute_angle_set = gimbal_set_control->yaw_motor.absolute_angle_set - gimbal_set_control->gimbal_rc_ctrl->rc.ch[0]/100000.0;
 	}
 	
-	LimitMax(gimbal_set_control->pitch_motor.relative_angle_set, 0.3);
+	LimitMax(gimbal_set_control->pitch_motor.absolute_angle_set, 0.3);
 	if (gimbal_set_control->yaw_motor.absolute_angle_set > PI) gimbal_set_control->yaw_motor.absolute_angle_set -=2*PI;
 	if (gimbal_set_control->yaw_motor.absolute_angle_set <-PI) gimbal_set_control->yaw_motor.absolute_angle_set +=2*PI;
 	
@@ -303,8 +308,8 @@ static void Gimbal_Set_Contorl(Gimbal_Control_t *gimbal_set_control)
 static void Gimbal_PID(Gimbal_Control_t *gimbal_pid)
 {
 	//pitch 
-	Gimbal_AnglePID_Calculate(&gimbal_pid->pitch_motor.angle_pid , gimbal_pid->pitch_motor.relative_angle,
-		gimbal_pid->pitch_motor.relative_angle_set, gimbal_pid->pitch_motor.gyro);
+	Gimbal_AnglePID_Calculate(&gimbal_pid->pitch_motor.angle_pid , gimbal_pid->pitch_motor.absolute_angle,
+		gimbal_pid->pitch_motor.absolute_angle_set, gimbal_pid->pitch_motor.gyro);
 	
 	gimbal_pid->pitch_motor.gyro_set = gimbal_pid->pitch_motor.angle_pid.out;
 	PID_Calculate(&gimbal_pid->pitch_motor.speed_pid, gimbal_pid->pitch_motor.gyro, gimbal_pid->pitch_motor.gyro_set);
@@ -324,7 +329,7 @@ static void Gimbal_PID(Gimbal_Control_t *gimbal_pid)
 	Corrector_Yaw_Speed(&corrector_yaw_speed);
 	gimbal_pid->yaw_motor.gyro_set = gimbal_pid->yaw_motor.gyro-gimbal_pid->yaw_motor.angle_pid.out;
 	PID_Calculate(&gimbal_pid->yaw_motor.speed_pid, gimbal_pid->yaw_motor.gyro_set, 0);
-#endif
+	#endif
 
 }
 

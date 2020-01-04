@@ -16,7 +16,7 @@
 #define GIMBAL_TASK_CONTROL_TIME 1
 //云台电机初始值（中值）电机重新安装之后，需要重新设定此参数
 #define PITCH_OFFSET_ECD 650
-#define YAW_OFFSET_ECD 600
+#define YAW_OFFSET_ECD 3000
 
 //云台电机一周期及其一半
 #define FULL_RANGE 8192

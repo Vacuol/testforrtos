@@ -13,6 +13,8 @@
 #if JSCOPE_WATCH_aim
 //j-scope 帮助pid调参
 static void Jscope_Watch_gimbal(void);
+float jlook_yrelative,jlook_yinitial,jlook_yangle;
+float jlook_follow;
 #endif
 
 #define INTERNALTEST 0
@@ -34,7 +36,7 @@ static void Aim_Feedback_Update(Aim_t *aim);
 static float Aim_Position_to_Angle(int16_t Pos);
 static void Getdata_Internal(Aim_t *aim);
 
-static kalman_filter_t F_aim;
+static kalman_filter_t F_x,F_y;
 static kalman_filter_init_t I;
 Aim_t aim;
 
@@ -47,8 +49,9 @@ void auto_aim_task(void const * argument)
 	
 	//初始化各项参数、指针, 定义kalman矩阵
 	Aim_Init(&aim, &I);
-	//初始化kalman矩阵
-	kalman_filter_init(&F_aim, &I);
+	//初始化kalman矩阵,用相同的I矩阵
+	kalman_filter_init(&F_x, &I);
+	kalman_filter_init(&F_y, &I);
 	
 	waitetime = xTaskGetTickCount();
 	for(;;)
@@ -74,12 +77,19 @@ void auto_aim_task(void const * argument)
 		
 		Aim_Feedback_Update(&aim);
 		
-		kalman_filter_calc(&F_aim, aim.x.angle[0],aim.x.speed,aim.x.accl,aim.x.accl);
-		if ( (F_aim.filtered_value[0] * F_aim.filtered_value[1] >0) && (int_abs(aim.x.relative) >100) )
-			aim.x.filted_angle = F_aim.filtered_value[0] + F_aim.filtered_value[1]*AURO_AIM_CONTROL_TIME*0.03;
-		else aim.x.filted_angle = F_aim.filtered_value[0];
-//		aim.x.filted_angle = F_aim.filtered_value[0];
-		aim.x.filted_speed = F_aim.filtered_value[1];
+		kalman_filter_calc(&F_x, aim.x.angle[0],aim.x.speed,aim.x.accl,aim.x.accl);
+		kalman_filter_calc(&F_y, aim.y.angle[0],aim.y.speed,aim.y.accl,aim.y.accl);
+		if ( (F_x.filtered_value[0] * F_x.filtered_value[1] >0) && (int_abs(aim.x.relative) >100) )
+		{
+			aim.x.filted_angle = F_x.filtered_value[0] + F_x.filtered_value[1]*AURO_AIM_CONTROL_TIME*0.03;
+			
+			
+		}
+		else aim.x.filted_angle = F_x.filtered_value[0];
+//		aim.x.filted_angle = F_x.filtered_value[0];
+		aim.x.filted_speed = F_x.filtered_value[1];
+		aim.y.filted_angle = F_y.filtered_value[0];
+		aim.y.filted_speed = F_y.filtered_value[1];
 		
 #if JSCOPE_WATCH_aim		
 		Jscope_Watch_gimbal();
@@ -244,8 +254,6 @@ void Getdata_Camera()
 }
 
 #if JSCOPE_WATCH_aim
-float jlook_yrelative,jlook_yinitial,jlook_yangle;
-
 
 static void Jscope_Watch_gimbal(void)
 {
